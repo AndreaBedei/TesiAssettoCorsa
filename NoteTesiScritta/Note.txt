@@ -26,7 +26,7 @@ Scelta della macchina:
     Nessun aiuto alla guida (TC, ABS disattivati)
 
 Caratteristiche Chiave da Cercare:
-    Telaio Dallara (simile a Indy Lights o F3)
+    Telaio Dallara (simile a Indy Lights o F2)
     Motore 2.0L endotermico (turbo o aspirato)
     Potenza: ~400 CV
     Peso contenuto, sospensioni pushrod
@@ -91,6 +91,8 @@ dove:
     ω = velocità angolare della ruota
     R = raggio effettivo della ruota
     v = velocità longitudinale del veicolo
+
+Attenzione diversi dei dati elencati non vengono aggiornati nella gara, in aggiunta gli assi sono invertiti ad esempio del grip, molte azioni correttive, e di eliminazione di dati non realmente presenti.
 ----------------------------------------------------------------------------------
 Creo la funzione di classificazione: Perfetto, con questi dati possiamo creare una funzione Python che usa un criterio fisico ispirato al modello Pacejka semplificato per stimare se l’auto è in:
     Sottosterzo
