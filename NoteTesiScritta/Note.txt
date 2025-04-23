@@ -19,17 +19,11 @@ https://acstuff.ru/app/
 Scelta della macchina:
  Obiettivo: trovare un'auto in Assetto Corsa più simile possibile a quelle delle gare autonome
 📌 Caratteristiche tipiche delle auto autonome da corsa:
-    Monoposto (simili a F3 o F2)
+    Monoposto (simili F2)
     Leggere (~600–700kg)
     Aerodinamica spinta
-    Elevata accelerazione (elettriche o motori turbo 4/6 cilindri)
+    Elevata accelerazione (elettriche o motori turbo 6 cilindri)
     Nessun aiuto alla guida (TC, ABS disattivati)
-✅ Auto consigliate in Assetto Corsa standard (senza mod):
-    Tatuus FA01
-        👉 La più vicina per filosofia alle auto autonome da corsa
-        Categoria: Formula Abarth / simile a F3
-        Leggera, reattiva, senza troppi aiuti
-        Ottima per allenare modelli RL
 
 Caratteristiche Chiave da Cercare:
     Telaio Dallara (simile a Indy Lights o F3)
@@ -39,14 +33,7 @@ Caratteristiche Chiave da Cercare:
     Cambio sequenziale a 6 marce
     Aerodinamica da monoposto moderna
 ✅ Mod che si avvicinano di più:
-🏁 1. Dallara IL-15 (Indy Lights) – la più simile in assoluto
-    Motore: 2.0L turbo Mazda-AER
-    Potenza: ~450 CV
-    Cambio: Sequenziale 6 marce
-    Telaio: Dallara
-    Peso: Circa 630 kg
-    Download gratuito: È difficile da trovare gratuitamente, ma ogni tanto viene condivisa su RaceDepartment o nei gruppi Discord delle mod gratuite di AC (posso aiutarti a cercarla).
-
+ https://brasilsimulatormods.com/en/posts/dallara-224-f2-2024/
 -------------------------------------------------------------------
 Inserimento del circuito di Yas Marina:
 Perfetto! Dalla tua schermata vedo che hai scaricato e scompattato correttamente la mod del circuito Abu Dhabi 2021 CHQ v0.9.
