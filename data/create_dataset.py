@@ -38,7 +38,7 @@ if __name__ == "__main__":
             telem["steer"], telem["speed"], telem["g_force"],
             telem["wheel_slip"], telem["yaw_rate"], telem["gas"]
         )
-        
+
         print(result)
 
         # Scrittura del record nel CSV
@@ -50,9 +50,9 @@ if __name__ == "__main__":
                 "rpm": telem["rpm"],
                 "steer": telem["steer"],
                 "speed": telem["speed"],
-                "g_force_x": telem["g_force"][0],
-                "g_force_y": telem["g_force"][1],
-                "g_force_z": telem["g_force"][2],
+                "g_force_y": telem["g_force"][0], # Inversione a causa di un bug
+                "g_force_z": telem["g_force"][1], # Inversione a causa di un bug
+                "g_force_x": telem["g_force"][2], # Inversione a causa di un bug
                 "wheel_slip_front_left": telem["wheel_slip"][0],
                 "wheel_slip_front_right": telem["wheel_slip"][1],
                 "wheel_slip_rear_left": telem["wheel_slip"][2],
@@ -79,6 +79,6 @@ if __name__ == "__main__":
         if cv2.waitKey(1) == 27:
             break
         
-        time.sleep(0.25)
+        time.sleep(1)
 
     print("Dataset creato")
