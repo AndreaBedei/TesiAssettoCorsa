@@ -1,0 +1,123 @@
+Ambiente:
+Getting started
+    Purchase and install Assetto Corsa on Steam, and download the free Content Manager extension software.
+    Download and install the Microsoft Visual C++ 2015-2019 Redistributable from here.
+    Download and install the Microsoft Messaging Passing Interface standard (MS-MPI) v10.1.3 here.
+    Getting the Assetto Corsa app working:
+        Install the Python 3.3.5 interpreter. This is what Assetto Corsa uses and we need this locally for the socket import to not throw errors in AC.
+    Getting the standalone Python project working:
+        Install a modern Python interpreter (tested on: Python 3.9). This is what we use for the part of the project that runs outside of AC.
+    Set up a new session in Assetto Corsa through Content Manager:
+        Select Practice Mode and choose track ".................." and car "..............." PERCHè QUESTE MACCHINE E QUESTO TRACCIATO
+  
+-----------------------------------------------------------------------
+
+Installazione contentManager versione lite:
+https://acstuff.ru/app/
+-------------------------------------------------------------------
+
+Scelta della macchina:
+ Obiettivo: trovare un'auto in Assetto Corsa più simile possibile a quelle delle gare autonome
+📌 Caratteristiche tipiche delle auto autonome da corsa:
+    Monoposto (simili a F3 o F2)
+    Leggere (~600–700kg)
+    Aerodinamica spinta
+    Elevata accelerazione (elettriche o motori turbo 4/6 cilindri)
+    Nessun aiuto alla guida (TC, ABS disattivati)
+✅ Auto consigliate in Assetto Corsa standard (senza mod):
+    Tatuus FA01
+        👉 La più vicina per filosofia alle auto autonome da corsa
+        Categoria: Formula Abarth / simile a F3
+        Leggera, reattiva, senza troppi aiuti
+        Ottima per allenare modelli RL
+
+Caratteristiche Chiave da Cercare:
+    Telaio Dallara (simile a Indy Lights o F3)
+    Motore 2.0L endotermico (turbo o aspirato)
+    Potenza: ~400 CV
+    Peso contenuto, sospensioni pushrod
+    Cambio sequenziale a 6 marce
+    Aerodinamica da monoposto moderna
+✅ Mod che si avvicinano di più:
+🏁 1. Dallara IL-15 (Indy Lights) – la più simile in assoluto
+    Motore: 2.0L turbo Mazda-AER
+    Potenza: ~450 CV
+    Cambio: Sequenziale 6 marce
+    Telaio: Dallara
+    Peso: Circa 630 kg
+    Download gratuito: È difficile da trovare gratuitamente, ma ogni tanto viene condivisa su RaceDepartment o nei gruppi Discord delle mod gratuite di AC (posso aiutarti a cercarla).
+
+-------------------------------------------------------------------
+Inserimento del circuito di Yas Marina:
+Perfetto! Dalla tua schermata vedo che hai scaricato e scompattato correttamente la mod del circuito Abu Dhabi 2021 CHQ v0.9.
+https://www.overtake.gg/downloads/yas-marina-circuit-2021-abu_dhabi_2021_chq-and-pyyers-ext-ai.75051/
+Link: https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqazZJUFFzbXRHUFRZOGtLZVBJVF9uREgxei1EQXxBQ3Jtc0ttRzlYV3JMQ3ViYkdsSTB5UmVsNlNzRXBBQjBjNFBCZURoVGhzYXJZTFJ3VUQ4M3VYbFVTZWdpOTgzcmEtdUZpc1dWX3E4dGdURGo4N3BfOWdsUWwzSDZtemFBWnc4azhoWDRTMVhKVTF1U1RwOEsxcw&q=https%3A%2F%2Fmega.nz%2Ffile%2FVORWQLRC%23LhuFH4_S07utoJgInqHdyy6IrHBtRapPKm0dZvZv3BA&v=O-YWSc9ReKE
+Installazioen custom patch: https://acstuff.club/patch/
+
+
+---------------------------------------------
+
+python per prendere i valori usiamo la libreria:
+pyaccsharedmemory
+
+-----------------------------------------------------
+
+Scelta dei dati:
+Non si contempla la possibilità di clima avverso come la pioggia, ma si considera il fattore calore della pista.
+Tra i dati restituiti da assetto corsa non è presente l'usura delle gomme quindi essa va dedotta dal passare del tempo.
+
+I dati utilizzati sono:
+\section*{Dataset Features}
+
+The following features were selected from both the physics and graphics interfaces of the simulator to build the dataset for grip prediction:
+
+\begin{itemize}
+    \item \textbf{gas}: Throttle pedal input (range: 0.0 to 1.0).
+    \item \textbf{brake}: Brake pedal input (range: 0.0 to 1.0).
+    \item \textbf{rpm}: Engine revolutions per minute.
+    \item \textbf{steer}: Steering input angle.
+    \item \textbf{speed}: Vehicle speed in km/h.
+    \item \textbf{g\_force}: 3D vector representing forces acting on the car body.
+    \item \textbf{wheel\_slip}: Amount of slip for each of the four tires.
+    \item \textbf{pressure}: Tire pressure for each wheel.
+    \item \textbf{tyre\_temp}: Core temperature of each tire.
+    \item \textbf{air\_temp}: Ambient air temperature.
+    \item \textbf{road\_temp}: Road surface temperature.
+    \item \textbf{yaw\_rate}: Yaw angular velocity (rotation around the vertical axis).
+    \item \textbf{slip\_angle}: Slip angle of the tires (angle between wheel heading and actual direction).
+    \item \textbf{slip\_ratio}: Slip ratio (longitudinal slip of each tire).
+    \item \textbf{brake\_pressure}: Pressure applied on the braking system.
+    \item \textbf{brake\_temp}: Temperature of the brake discs for each wheel.
+    \item \textbf{current\_time\_str}: Current lap time as a string (e.g., "00:01:23.456").
+    \item \textbf{normalized\_car\_position}: Normalized position on the track (0.0 = start, 1.0 = end).
+    \item \textbf{wind\_speed}: Wind velocity in meters per second.
+    \item \textbf{wind\_direction}: Wind direction in degrees (from north).
+\end{itemize}
+
+Attenzione nel simulatore:
+Nel gioco, physics.wheel_slip.front_left ecc. sono valori simulati dal motore fisico. Si basano su:
+    la velocità angolare della ruota (quanto velocemente gira)
+    la velocità effettiva del veicolo (quanto velocemente si muove rispetto alla strada)
+Lo slip viene calcolato con formule tipo:
+slip_ratio = (ω * R - v) / v
+dove:
+    ω = velocità angolare della ruota
+    R = raggio effettivo della ruota
+    v = velocità longitudinale del veicolo
+----------------------------------------------------------------------------------
+Creo la funzione di classificazione: Perfetto, con questi dati possiamo creare una funzione Python che usa un criterio fisico ispirato al modello Pacejka semplificato per stimare se l’auto è in:
+    Sottosterzo
+    Sovrasterzo
+    Neutrale
+E in più capire se è possibile accelerare ancora senza perdere aderenza.
+Spiegazione:
+    Si usa il confronto tra yaw rate atteso e reale per stimare la deriva.
+    Si osserva lo slip tra asse anteriore e posteriore.
+    Si tiene conto di accelerazione laterale e angolo di slip per capire se si è al limite di aderenza. (con una soglia per non far esagerare la macchina al fine di fargli perdere aderenza)
+
+
+----------------------------------------------------------------------------------------------------------------------
+Prossimi passi:
+Trovare l'auto perfetta per noi
+Capire quali dati fare il dataset
+Capire se l'auto sta perdendo aderenza con qualche algoritmo matematico???
