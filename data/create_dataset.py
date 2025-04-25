@@ -35,50 +35,50 @@ if __name__ == "__main__":
         
         # Classificazione del comportamento del veicolo
         result = classify_vehicle_state(
-            telem["steer"], telem["speed"], telem["g_force"],
-            telem["wheel_slip"], telem["yaw_rate"], telem["gas"]
+            telem["speed"], telem["g_force"],
+            telem["wheel_slip"]
         )
 
         print(result)
 
-        # Scrittura del record nel CSV
-        with open(csv_filename, mode='a', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=fields)
-            writer.writerow({
-                "gas": telem["gas"],
-                "brake": telem["brake"],
-                "rpm": telem["rpm"],
-                "steer": telem["steer"],
-                "speed": telem["speed"],
-                "g_force_y": telem["g_force"][0], # Inversione a causa di un bug
-                "g_force_z": telem["g_force"][1], # Inversione a causa di un bug
-                "g_force_x": telem["g_force"][2], # Inversione a causa di un bug
-                "wheel_slip_front_left": telem["wheel_slip"][0],
-                "wheel_slip_front_right": telem["wheel_slip"][1],
-                "wheel_slip_rear_left": telem["wheel_slip"][2],
-                "wheel_slip_rear_right": telem["wheel_slip"][3],
-                "pressure_front_left": telem["pressure"][0],
-                "pressure_front_right": telem["pressure"][1],
-                "pressure_rear_left": telem["pressure"][2],
-                "pressure_rear_right": telem["pressure"][3],
-                "tyre_temp_front_left": telem["tyre_temp"][0],
-                "tyre_temp_front_right": telem["tyre_temp"][1],
-                "tyre_temp_rear_left": telem["tyre_temp"][2],
-                "tyre_temp_rear_right": telem["tyre_temp"][3],
-                "air_temp": telem["air_temp"],
-                "road_temp": telem["road_temp"],
-                "yaw_rate": telem["yaw_rate"],
-                "current_time_str": graphics["current_time_str"].rstrip('\x00'),
-                "normalized_car_position": graphics["normalized_car_position"],
-                "wind_speed": graphics["wind_speed"],
-                "wind_direction": graphics["wind_direction"],
-                "result": result
-            })
+        # # Scrittura del record nel CSV
+        # with open(csv_filename, mode='a', newline='') as file:
+        #     writer = csv.DictWriter(file, fieldnames=fields)
+        #     writer.writerow({
+        #         "gas": telem["gas"],
+        #         "brake": telem["brake"],
+        #         "rpm": telem["rpm"],
+        #         "steer": telem["steer"],
+        #         "speed": telem["speed"],
+        #         "g_force_y": telem["g_force"][0], # Inversione a causa di un bug
+        #         "g_force_z": telem["g_force"][1], # Inversione a causa di un bug
+        #         "g_force_x": telem["g_force"][2], # Inversione a causa di un bug
+        #         "wheel_slip_front_left": telem["wheel_slip"][0],
+        #         "wheel_slip_front_right": telem["wheel_slip"][1],
+        #         "wheel_slip_rear_left": telem["wheel_slip"][2],
+        #         "wheel_slip_rear_right": telem["wheel_slip"][3],
+        #         "pressure_front_left": telem["pressure"][0],
+        #         "pressure_front_right": telem["pressure"][1],
+        #         "pressure_rear_left": telem["pressure"][2],
+        #         "pressure_rear_right": telem["pressure"][3],
+        #         "tyre_temp_front_left": telem["tyre_temp"][0],
+        #         "tyre_temp_front_right": telem["tyre_temp"][1],
+        #         "tyre_temp_rear_left": telem["tyre_temp"][2],
+        #         "tyre_temp_rear_right": telem["tyre_temp"][3],
+        #         "air_temp": telem["air_temp"],
+        #         "road_temp": telem["road_temp"],
+        #         "yaw_rate": telem["yaw_rate"],
+        #         "current_time_str": graphics["current_time_str"].rstrip('\x00'),
+        #         "normalized_car_position": graphics["normalized_car_position"],
+        #         "wind_speed": graphics["wind_speed"],
+        #         "wind_direction": graphics["wind_direction"],
+        #         "result": result
+        #     })
         
         # Interruzione del ciclo al tasto ESC
         if cv2.waitKey(1) == 27:
             break
         
-        time.sleep(1)
+        time.sleep(0.2)
 
     print("Dataset creato")
