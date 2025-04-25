@@ -67,7 +67,7 @@
 
 def classify_vehicle_state(speed, g_force, wheel_slip):
     # === Costanti configurabili ===
-    SLIP_LIMIT = 0.8             # pattinamento considerato eccessivo
+    SLIP_LIMIT = 1.1             # pattinamento considerato eccessivo
     SLIP_HIGH_GRIP = 0.7         # sotto questo valore, alto grip
 
     # === Calcoli ===
