@@ -1,10 +1,6 @@
-import vgamepad as vg
-
-# Inizializza un gamepad virtuale Xbox 360
-gamepad = vg.VX360Gamepad()
 
 # action: [steer (-1,1), throttle (0,1), brake (0,1)]
-def send_action(action):
+def send_action(action, gamepad):
     steer, throttle, brake = action
 
     # Sterzo: asse sinistro X (da -32768 a +32767)
