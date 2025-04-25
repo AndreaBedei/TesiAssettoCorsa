@@ -102,11 +102,14 @@ E in più capire se è possibile accelerare ancora senza perdere aderenza.
 Spiegazione:
     Si usa il confronto tra yaw rate atteso e reale per stimare la deriva.
     Si osserva lo slip tra asse anteriore e posteriore.
-    Si tiene conto di accelerazione laterale e angolo di slip per capire se si è al limite di aderenza. (con una soglia per non far esagerare la macchina al fine di fargli perdere aderenza)
-
-
+    Si tiene conto di accelerazione laterale e angolo di slip per capire se si è al limite di aderenza. (con una soglia per non far esagerare la macchina al fine di fargli perdere aderenza
 ----------------------------------------------------------------------------------------------------------------------
-Prossimi passi:
-Trovare l'auto perfetta per noi
-Capire quali dati fare il dataset
-Capire se l'auto sta perdendo aderenza con qualche algoritmo matematico???
+
+ALGORITMO DI CLASSIFICAZIONE:
+Non passare tutti i dati con cui si etichetta il result, provare a vedere come va senza nessun dato, e solo 1 record alla volta.
+Eliminare il result provare ad avere un dataset libero.
+
+
+
+
+
