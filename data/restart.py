@@ -1,15 +1,20 @@
-# import pyautogui
-# import time
+from pynput.keyboard import Controller, Key
+import time
 
-# def press_escape():
-#     pyautogui.press('esc')  # Apre il menu in Assetto Corsa
-#     time.sleep(1)            # Attendi che si apra il menu
+# Initialize the keyboard controller
+keyboard = Controller()
 
-#     # Esempio: premi 'down' 2 volte e poi 'enter' per selezionare "Restart Session"
-#     pyautogui.press('down', presses=2, interval=0.2)
-#     pyautogui.press('enter')
-
-
-# COsì non funziona, non va il comando giù, dobiamo farlo a mano con il mouse.
+# Function to simulate key presses
+def restart_game():
+    time.sleep(5)
+    # Simulate Ctrl+O
+    with keyboard.pressed(Key.ctrl):
+        keyboard.press('o')
+        time.sleep(0.5)
+        keyboard.release('o')
+        keyboard.press('k')
+        time.sleep(0.5)
+        keyboard.release('k')
+        
 
 
