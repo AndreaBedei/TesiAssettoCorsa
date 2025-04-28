@@ -12,7 +12,7 @@ import time
 import csv
 
 if __name__ == "__main__":
-    csv_filename = 'vehicle_telemetry.csv'
+    csv_filename = 'vehicle_telemetry_abu36GF2.csv'
     fields = [
         "gas", "brake", "rpm", "steer", "speed", "g_force_x", "g_force_y", "g_force_z",
         "wheel_slip_front_left", "wheel_slip_front_right", "wheel_slip_rear_left", "wheel_slip_rear_right",
@@ -39,9 +39,9 @@ if __name__ == "__main__":
             telem["wheel_slip"]
         )
 
-        # print(result)
+        
 
-        # Scrittura del record nel CSV
+        # # Scrittura del record nel CSV
         with open(csv_filename, mode='a', newline='') as file:
             writer = csv.DictWriter(file, fieldnames=fields)
             writer.writerow({
@@ -79,6 +79,6 @@ if __name__ == "__main__":
         if cv2.waitKey(1) == 27:
             break
         
-        time.sleep(0.15)
+        time.sleep(0.10)
 
     print("Dataset creato")
