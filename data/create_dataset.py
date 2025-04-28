@@ -39,8 +39,6 @@ if __name__ == "__main__":
             telem["wheel_slip"]
         )
 
-        
-
         # # Scrittura del record nel CSV
         with open(csv_filename, mode='a', newline='') as file:
             writer = csv.DictWriter(file, fieldnames=fields)
