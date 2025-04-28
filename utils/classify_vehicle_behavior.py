@@ -67,8 +67,8 @@
 
 def classify_vehicle_state(speed, g_force, wheel_slip):
     # === Costanti configurabili ===
-    SLIP_LIMIT = 1.1             # pattinamento considerato eccessivo
-    SLIP_HIGH_GRIP = 0.7         # sotto questo valore, alto grip
+    SLIP_LIMIT = 1.15             # pattinamento considerato eccessivo
+    SLIP_HIGH_GRIP = 0.6         # sotto questo valore, alto grip
 
     # === Calcoli ===
     g_lateral = abs(g_force[0])  # solo componente laterale
@@ -84,13 +84,14 @@ def classify_vehicle_state(speed, g_force, wheel_slip):
 
     # === Caso 1: perdita di aderenza ===
     if (front_slip > SLIP_LIMIT or rear_slip > SLIP_LIMIT) and g_lateral > dynamic_g_curve:
-        return "perdita_aderenza"
+        return "grip_loss"
 
     # === Caso 2: sei in curva e puoi accelerare di più ===
     elif (front_slip < SLIP_HIGH_GRIP and rear_slip < SLIP_HIGH_GRIP) and g_lateral > dynamic_g_curve:
-        return "alto_grip_potenziale_accelerazione"
-
+        return "high_grip_accelerate"
+    
+    elif (front_slip > SLIP_HIGH_GRIP and front_slip < SLIP_LIMIT or rear_slip > SLIP_HIGH_GRIP and rear_slip < SLIP_LIMIT) and g_lateral > dynamic_g_curve:
+        return "low_grip_accelerate"
     else:
-    # === Caso 3: neutro (tutto normale) ===
-        return "neutro"
+        return "neutral"
 
