@@ -4,17 +4,12 @@ from sklearn.preprocessing import StandardScaler, LabelEncoder
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 from tensorflow.keras.utils import to_categorical
+from preprocess_dataset import fix_dataset
 
 # === 1. Caricamento e preprocessing ===
-df = pd.read_csv("../data/vehicle_telemetry.csv")
+df = pd.read_csv("../data/vehicle_telemetry_abu36GF2.csv")
 
-# Rimuovi colonne non utili
-cols_to_drop = [
-    'wheel_slip_front_left', 'wheel_slip_front_right',
-    'wheel_slip_rear_left', 'wheel_slip_rear_right',
-    'current_time_str'
-]
-df.drop(columns=cols_to_drop, inplace=True)
+df = fix_dataset(df)
 
 # Encode etichette
 label_encoder = LabelEncoder()
@@ -34,7 +29,7 @@ for i in range(len(X_scaled) - window_size):
     y_seq.append(y[i + window_size - 1])  # etichetta dell'ultimo elemento della finestra
 
 X_seq = np.array(X_seq)
-y_seq = to_categorical(y_seq, num_classes=3)
+y_seq = to_categorical(y_seq, num_classes=4)
 
 # Split sequenziale train/val/test
 train_size = int(0.7 * len(X_seq))
@@ -49,7 +44,7 @@ model = Sequential([
     LSTM(64, input_shape=(window_size, X_seq.shape[2]), return_sequences=False),
     Dropout(0.3),
     Dense(64, activation='relu'),
-    Dense(3, activation='softmax')
+    Dense(4, activation='softmax')
 ])
 
 model.compile(

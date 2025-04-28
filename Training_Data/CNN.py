@@ -4,23 +4,19 @@ from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 from sklearn.model_selection import train_test_split
 from CarDataset import CarDataset
 from torch.utils.data import Dataset, DataLoader
+from preprocess_dataset import fix_dataset
 import torch
 import torch.nn as nn
 from CarBehaviorCNN import CarBehaviorCNN
 
 # === CONFIGURAZIONE ===
-CSV_PATH = "../data/vehicle_telemetry.csv"
 WINDOW_SIZE = 1
 TEST_SPLIT_RATIO = 0.2
 
 # === CARICAMENTO E PULIZIA ===
-df = pd.read_csv(CSV_PATH)
+df = pd.read_csv("../data/vehicle_telemetry_abu36GF2.csv")
 
-# Rimuovi colonne da escludere
-columns_to_drop = [
-    'current_time_str'
-]
-df = df.drop(columns=columns_to_drop)
+df = fix_dataset(df)
 
 # Codifica target
 label_encoder = LabelEncoder()

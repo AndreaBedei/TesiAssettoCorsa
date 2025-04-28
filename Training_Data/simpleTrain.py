@@ -2,20 +2,15 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, LabelEncoder
+from preprocess_dataset import fix_dataset
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.utils import to_categorical
 
 # === 1. Caricamento e preprocessamento ===
-df = pd.read_csv("../data/vehicle_telemetry.csv")
+df = pd.read_csv("../data/vehicle_telemetry_abu36GF2.csv")
 
-# Rimuovi colonne da escludere
-cols_to_drop = [
-    'wheel_slip_front_left', 'wheel_slip_front_right',
-    'wheel_slip_rear_left', 'wheel_slip_rear_right',
-    'current_time_str'  # Non utile per il modello
-]
-df.drop(columns=cols_to_drop, inplace=True)
+df = fix_dataset(df)
 
 # Encode della colonna 'result'
 label_encoder = LabelEncoder()
@@ -24,7 +19,7 @@ df["result"] = label_encoder.fit_transform(df["result"])
 
 # Split input/output
 X = df.drop(columns=["result"])
-y = to_categorical(df["result"], num_classes=3)
+y = to_categorical(df["result"], num_classes=4)
 
 # Normalizzazione
 scaler = StandardScaler()
@@ -47,7 +42,7 @@ model = Sequential([
     Dropout(0.2),  # Secondo layer di dropout
     Dense(64, activation='relu'),
     Dense(32, activation='relu'),
-    Dense(3, activation='softmax')  # Tre classi
+    Dense(4, activation='softmax')  # Tre classi
 ])
 
 
