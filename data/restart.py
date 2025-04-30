@@ -6,7 +6,6 @@ keyboard = Controller()
 
 # Function to simulate key presses
 def restart_game():
-    time.sleep(5)
     # Simulate Ctrl+O
     with keyboard.pressed(Key.ctrl):
         keyboard.press('o')

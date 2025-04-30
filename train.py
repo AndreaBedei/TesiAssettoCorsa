@@ -1,6 +1,6 @@
 import gym
 from stable_baselines3 import SAC
-from stable_baselines3.common.envs import DummyVecEnv
+from stable_baselines3.common.vec_env import DummyVecEnv
 from env.ac_env import AssettoCorsaEnv  # Il tuo ambiente personalizzato
 
 # Crea l'ambiente

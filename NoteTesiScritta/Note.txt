@@ -1,3 +1,27 @@
+Esperienza di guida in simulazione + guida normale, più persone, diversi climi
+
+
+Crrazione dataset:
+5 Minuti Soleggiato 36 gradi AEU
+5 Minuti Soleggiato 18 gradi AEU
+5 Minuti Soleggiato 0 gradi AEU
+
+5 Minuti Soleggiato 36 gradi Imola
+5 Minuti Soleggiato 18 gradi Imola
+5 Minuti Soleggiato 0 gradi Imola
+
+5 Minuti Pioggia 36 gradi Altro circuito
+5 Minuti Pioggia 18 gradi Altro circuito
+5 Minuti Pioggia 0 gradi Altro circuito
+
+
+
+
+
+Sviluppi futuri, provare con pneumatici diversi -> molto importante
+
+
+
 
 Attenzione nel simulatore:
 Nel gioco, physics.wheel_slip.front_left ecc. sono valori simulati dal motore fisico. Si basano su:
