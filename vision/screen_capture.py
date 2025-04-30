@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 
 sct = mss.mss()
-monitor = sct.monitors[2]  # Primo monitor
+monitor = sct.monitors[1]  # Primo monitor
 
 def capture_screen():
     frame = np.array(sct.grab(monitor))

@@ -23,7 +23,11 @@ def fix_dataset(df: pd.DataFrame) -> pd.DataFrame:
     cols_to_drop = [
     'wheel_slip_front_left', 'wheel_slip_front_right',
     'wheel_slip_rear_left', 'wheel_slip_rear_right',
-    'current_time_str'
+    'current_time_str', 
+    # "normalized_car_position","wind_speed","wind_direction",
+    # "air_temp","road_temp",
+    # "gas","brake","rpm","steer","speed","g_force_z","pressure_front_left","pressure_front_right","pressure_rear_left","pressure_rear_right",
+    # "tyre_temp_front_left","tyre_temp_front_right","tyre_temp_rear_left","tyre_temp_rear_right","yaw_rate",
     ]
     df.drop(columns=cols_to_drop, inplace=True)
 
