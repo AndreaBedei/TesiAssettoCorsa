@@ -13,7 +13,7 @@ columns = [
     'air_temp', 'road_temp', 'yaw_rate'
 ]
 
-def clip_outliers_iqr(df, features, multiplier=3):
+def clip_outliers_iqr(df, features, multiplier=4):
     df_clipped = df.copy()
     for feature in features:
         if pd.api.types.is_numeric_dtype(df_clipped[feature]):
@@ -46,7 +46,7 @@ print(df["result"].value_counts())
 # Correlation Analysis
 important_vars = ["gas", "brake", "speed", "yaw_rate", "g_force_x", "g_force_y", "g_force_z"]
 
-corr_matrix = df[important_vars + ["normalized_car_position"]].corr()
+corr_matrix = df[important_vars + ["normalized_car_position"] + ["steer"]].corr()
 
 # Clipping outliers in all physical variables
 df = clip_outliers_iqr(df, columns)
@@ -72,7 +72,7 @@ df["avg_tyre_temp"] = df[tyre_temp_cols].mean(axis=1)
 # Overall distribution of tire temperatures
 plt.figure(figsize=(10,6))
 sns.histplot(df["avg_tyre_temp"], kde=True)
-plt.title("Distribution of Average Tire Temperature")
+plt.title("Distribution of Average Tire Temperature °C")
 plt.show()
 
 # Tire temperature segmented by grip classification
@@ -118,7 +118,7 @@ df["pressure_rear_mean"] = (df["pressure_rear_left"] + df["pressure_rear_right"]
 plt.figure(figsize=(14,6))
 sns.histplot(df["pressure_front_mean"], kde=True, color='green', label='Front Pressure')
 sns.histplot(df["pressure_rear_mean"], kde=True, color='orange', label='Rear Pressure')
-plt.title("Distribution of Front vs Rear Tire Pressure")
+plt.title("Distribution of Front vs Rear Tire Pressure PSI")
 plt.xlabel("Pressure")
 plt.legend()
 plt.grid()
@@ -137,7 +137,7 @@ df["tyre_temp_rear_mean"] = (df["tyre_temp_rear_left"] + df["tyre_temp_rear_righ
 plt.figure(figsize=(14,6))
 sns.histplot(df["tyre_temp_front_mean"], kde=True, color='purple', label='Front Tire Temp')
 sns.histplot(df["tyre_temp_rear_mean"], kde=True, color='pink', label='Rear Tire Temp')
-plt.title("Distribution of Front vs Rear Tire Temperatures")
+plt.title("Distribution of Front vs Rear Tire Temperatures °C")
 plt.xlabel("Temperature (°C)")
 plt.legend()
 plt.grid()
@@ -155,7 +155,7 @@ plt.figure(figsize=(12,6))
 sns.scatterplot(x="pressure_rear_mean", y="tyre_temp_rear_mean", hue="result", data=df)
 plt.title("Rear Tire Pressure vs Rear Tire Temperature by Grip Classification")
 plt.xlabel("Pressure")
-plt.ylabel("Temperature")
+plt.ylabel("Temperature °C")
 plt.grid()
 plt.show()
 
