@@ -6,13 +6,14 @@ Crrazione dataset:
 5 Minuti Soleggiato 18 gradi AEU
 5 Minuti Soleggiato 0 gradi AEU
 
+
 5 Minuti Soleggiato 36 gradi Imola
 5 Minuti Soleggiato 18 gradi Imola
 5 Minuti Soleggiato 0 gradi Imola
 
-5 Minuti Pioggia 36 gradi Altro circuito
-5 Minuti Pioggia 18 gradi Altro circuito
-5 Minuti Pioggia 0 gradi Altro circuito
+5 Minuti Soleggiato 36 gradi mugello
+5 Minuti Soleggiato 18 gradi mugello
+5 Minuti Soleggiato 0 gradi  mugello
 
 
 
