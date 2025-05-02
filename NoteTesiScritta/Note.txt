@@ -16,40 +16,14 @@ Crrazione dataset:
 5 Minuti Soleggiato 0 gradi  mugello
 
 
+Continua a prendere il dataset
+Descrivi dati singoli di Mattina nella parte data analysis, iniziare con mockup e parte della interfaccia
+
 
 
 
 Sviluppi futuri, provare con pneumatici diversi -> molto importante
 
-
-
-
-Attenzione nel simulatore:
-Nel gioco, physics.wheel_slip.front_left ecc. sono valori simulati dal motore fisico. Si basano su:
-    la velocità angolare della ruota (quanto velocemente gira)
-    la velocità effettiva del veicolo (quanto velocemente si muove rispetto alla strada)
-Lo slip viene calcolato con formule tipo:
-slip_ratio = (ω * R - v) / v
-dove:
-    ω = velocità angolare della ruota
-    R = raggio effettivo della ruota
-    v = velocità longitudinale del veicolo
-
-----------------------------------------------------------------------------------
-Creo la funzione di classificazione: Perfetto, con questi dati possiamo creare una funzione Python che usa un criterio fisico ispirato al modello Pacejka semplificato per stimare se l’auto è in:
-    Sottosterzo
-    Sovrasterzo
-    Neutrale
-E in più capire se è possibile accelerare ancora senza perdere aderenza.
-Spiegazione:
-    Si usa il confronto tra yaw rate atteso e reale per stimare la deriva.
-    Si osserva lo slip tra asse anteriore e posteriore.
-    Si tiene conto di accelerazione laterale e angolo di slip per capire se si è al limite di aderenza. (con una soglia per non far esagerare la macchina al fine di fargli perdere aderenza
-----------------------------------------------------------------------------------------------------------------------
-
-ALGORITMO DI CLASSIFICAZIONE:
-Non passare tutti i dati con cui si etichetta il result, provare a vedere come va senza nessun dato, e solo 1 record alla volta.
-Eliminare il result provare ad avere un dataset libero.
 
 
 

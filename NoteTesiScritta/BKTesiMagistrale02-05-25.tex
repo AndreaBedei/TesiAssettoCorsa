@@ -1,0 +1,1171 @@
+\documentclass[a4paper,final,12pt]{report}
+\newcommand\tab[1][13mm]{\hspace*{#1}}
+\usepackage[english]{babel}
+\usepackage{times}
+\usepackage[left=4cm,right=4cm]{geometry}
+\usepackage{geometry} % Deve esserci!
+\usepackage{graphicx} % permette di inserire immagini
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{longtable}
+\usepackage{amsmath, amssymb, cite}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{url}
+\usepackage{caption}
+\setcounter{tocdepth}{4}
+
+
+% Comandi per impaginare secondo le regole Unibo, da mettere dopo gli usepackage
+\renewcommand{\baselinestretch}{1.25}
+\newlength{\alphabet}
+\settowidth{\alphabet}{\normalfont abcdefghijklmnopqrstuvwxyz}
+\newgeometry{textwidth=2.5\alphabet,lines=35}
+
+\begin{document}
+\newenvironment{dedication}
+{\clearpage           % we want a new page
+  \pagenumbering{gobble}
+  \thispagestyle{empty}% no header and footer
+  \vspace*{\stretch{1}}% some space at the top 
+  \itshape             % the text is in italics
+  \raggedleft          % flush to the right margin
+}
+{\par % end the paragraph
+  \vspace{\stretch{3}} % space at bottom is three times that at the top
+  \clearpage           % finish off the page
+  \pagenumbering{arabic}
+}
+
+% Frontespizio
+\newgeometry{hmarginratio=1:1}
+\begin{titlepage}
+  \begin{center}
+  %{{\Large{\textsc{Alma Mater Studiorum - Università di
+  %Bologna}}}}\\
+    \begin{figure}[hbtp]
+    \centering
+    \includegraphics[scale=1]{img/logo.png}
+    \end{figure}
+
+  \vspace{5mm}
+  {\small Dipartimento di Informatica - Scienza e Ingegneria \\
+  Corso di Laurea Magistrale in Ingegneria e Scienze Informatiche}
+  \end{center}
+  
+\vspace{12mm}
+\begin{center}
+{\Large\textsc{\raggedright{Titolo}}}\
+\end{center}
+\vspace{25mm}
+\par
+\noindent
+  
+  \begin{center}
+    \large{Elaborato in \\
+    Smart Vehicular Systems}
+  \end{center}
+  \vspace{24mm}
+  \par
+  \noindent
+  
+  \begin{minipage}[t]{0.47\textwidth}
+  {\large{\bf Relatore:\\
+  Silvia Mirri
+  \\}}
+%  {\large{\bf Correlatore:\\
+%  Roberto Girau
+%  }}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.47\textwidth}\raggedleft
+  {\large{\bf Presentata da:\\
+  Andrea Bedei}}
+  \end{minipage}
+  \vspace{15mm}
+  \begin{center}
+  {\large{\bf Anno Accademico 2024/2025}}
+  \end{center}
+\end{titlepage}
+
+\restoregeometry
+\clearpage\null\thispagestyle{empty}\newpage
+
+\cleardoublepage
+
+% Inserisci frase e ringraziamenti
+    \begin{flushright}
+    \thispagestyle{empty}
+    \null\vspace{\stretch {1}}
+    \emph{I have a dream.\break --- Martin Luther King Jr.}
+    \vspace{\stretch{2}}\null
+    \end{flushright}
+    \cleardoublepage
+    
+    \clearpage\null\thispagestyle{empty}\newpage
+    
+    \begin{abstract}
+    Abstract
+    \end{abstract}
+    
+    
+    \setlength{\parindent}{0pt}
+    \begin{LARGE}
+    \textbf{Thanksgiving\\\\}
+    \end{LARGE}
+    \tab[10pt] I am proud to dedicate this space of my paper to the people who supported me in the writing of my thesis and throughout my entire degree. I am convinced that, without them, I would not have made it this far.\\
+    \tab[10pt] First and foremost, I thank my thesis advisor, who throughout my academic journey has always helped me with great professionalism and extreme helpfulness.\\
+    \tab[10pt] I thank my parents, who have supported me throughout my academic journey, because without them I would not have made it. \\
+    \tab[10pt] In particular, I thank my sister, who has always been there in times of need.\\
+    \tab[10pt] Special thanks go to my grandmother, who has always believed in me and supported me at every moment of my academic journey and life.\\
+    \tab[10pt] I thank all my friends, who have been there for me, supported me and put up with me at every stage of our lives. Special thanks go to Fabio, without whom I probably would not have enrolled in college. I also thank Lorenzo and Giulia, who have always been by my side. Special thanks also go to Matteo, who has always supported me at times when I really needed it. Finally, I thank Giuseppe, Mattia, Nicholas and Sara, whose advice made my life easier. 
+
+\tableofcontents
+%\listoffigures
+%\listoftables
+%\lstlistoflistings
+\setlength{\parindent}{0pt}
+
+\chapter{Introduction}
+\section{The Environment}
+This dissertation has been developed in collaboration with the Technology Innovation Institute (TII), which is a leading research institution based in Abu Dhabi, United Arab Emirates \cite{TII}. The TII focuses on the advancement of innovative technologies in various fields, including artificial intelligence, robotics, and autonomous systems. Among its most recognized initiatives is the design and development of fully autonomous Formula 1 (F1) racing cars. \cite{AutonomousRacing}.
+
+The TII project is about creating intelligent systems that can compete with human drivers in high-speed motorsport environments independently. This entails putting professional drivers' abilities and decision-making powers into the form of a computer program that can process huge amounts of information in real time, adapt circuit by circuit, and make optimisation choices for itself \cite{AI_F1}. Its purpose is to push AI-enhanced motorsport and bring the envelope nearer to mass-deployed autonomous vehicles.
+
+Autonomous racing involves numerous challenges, such as high speed decision making, real time sensor fusion, and dynamic adaptation to the environment's conditions. The AI models trained for this must process a real time stream of data, such as:
+\begin{itemize}
+    \item Forces on the car and the driver
+    \item Tire temperature and pressure,
+    \item Speed and acceleration,
+    \item Grip levels on various track surface.
+\end{itemize}
+Using reinforcement and machine learning algorithms, the system learns to drive the track optimally, balancing acceleration, braking, and steering in the way a human driver would, by simulating the decision making process of the latter. The ultimate hope is to create AI models that can compete at world level and outscore human drivers in terms of efficiency and accuracy \cite{SelfDriving}.
+
+The significance of the study is not only in racing, as it develops autonomous driving technology that can be transferred to real world transportation systems. The insights gained from autonomous F1 racing are applied to enhance algorithms for autonomous vehicles, which become safer, more responsive, and more adaptive to difficult driving conditions \cite{SelfDriving}.
+
+\section{The Issue}
+The main aim of this research is to create a system that uses sensors embedded in a fully autonomous Formula 1 vehicle to enable the creation of an artificial intelligence model that can determine the possibility of achieving optimal vehicle performance in cornering \cite{AI_F1}. Specifically, in the cornering stage, the system must calculate the different forces acting on the vehicle and analyze the surroundings to decide whether to accelerate or use the brakes, thus seeking to reduce cornering time while staying within the vehicle's operating parameters.
+
+This means that the autonomous racing agent incorporates an additional decision making factor, allowing it to evaluate the need for greater acceleration or braking in cornering maneuvers, based on all available sensor information \cite{AutonomousRacing}. These decisions have to be implemented by an artificial intelligence model in real time, thus ensuring that the car remains stable and does not exceed its traction limits.
+
+This problem is generally referred to as the \textbf{Grip Problem}, since the decision process is focused on maintaining vehicular control. The vehicle needs to have sufficient grip to stay in contact with the road while optimizing its speed in the turn. Thus, the artificial intelligence needs to determine on its own whether to slow down or speed up, depending on the current status of the vehicle \cite{SelfDriving}.
+
+\section{Understanding Grip in Cornering Dynamics}
+Grip, or \textit{tire road friction}, is the fundamental force that allows a vehicle to maintain control while navigating a turn.  It is mainly described by the \textbf{friction coefficient ($\mu$)} between the tires and the road surface, which in turn depends on factors such as tire composition, temperature, vertical load ($F_z$), roadway surface conditions. \cite{Pacejka2012}.
+
+\subsection{Grip is a temporal phenomenon}
+Grip depends on the evolution of conditions over time, such as:
+\begin{itemize}
+    \item \textbf{Forces acting on the car (G force):} influence the stability and behavior of the car.
+    \item \textbf{Tyre pressure and temperature:} change over the seconds and influence grip.
+    \item \textbf{Speed and steering angle:} grip changes with the driver's input and track conditions.
+\end{itemize}
+
+
+\subsection{Physical and Mathematical Definition of Grip}
+Grip is described by the equation:
+\begin{equation}
+    F_y = \mu F_z
+\end{equation}
+where:
+\begin{itemize}
+    \item $F_y$ is the lateral force resisting centrifugal forces when turning,
+    \item $\mu$ is the tire road friction coefficient. It depends on road texture and rubber properties,
+    \item $F_z$ is the vertical load on the tire, which is influenced by vehicle weight and aerodynamics.
+\end{itemize}
+The lateral grip is what makes a car move in a curved trajectory without flipping over. If $F_y$ exceeds the available grip force, the car will \textbf{understeer} (front wheels lose grip) or \textbf{oversteer} (rear wheels lose grip), leading to a loss of control \cite{Milliken1995}.
+
+\subsection{Grip Evolution in a Time Series Framework}
+Grip is a dynamic property, not a fixed one; it changes dynamically as the vehicle progresses through a turn. This change can be modeled with a \textbf{time series model}, where:
+\begin{itemize}
+    \item \textbf{Grip buildup phase:} when the vehicle is entering the corner, the lateral force ($F_y$) increases with slip angle ($\alpha$), following a \textbf{near linear} relationship.
+    \item \textbf{Grip saturation phase:} when $F_y$ approaches the peak force ($F_{y,max}$), the tire enters a \textbf{nonlinear} regime where additional slip results in diminishing grip gains.
+    \item \textbf{Grip loss phase:} under the application of high lateral force, $F_y$ starts to decrease due to rubber hysteresis and road tire separation, leading to full tire saturation.
+\end{itemize}
+Mathematically, this is described using Pacejka's Magic Formula.
+
+\chapter{State of the Art}
+
+\section{The Autonomous Racing Car \cite{motor1}}
+In autonomous motor racing, the cars used are built on the Dallara Super Formula chassis, which is a high performance open wheel vehicle originally designed for the Japanese Super Formula championship. Unlike their manually driven versions, the cars used in this scenario are equipped with a full autonomous driving system. The drivetrain is a 2.0 liter turbocharged four cylinder Honda engine, rated at around 550 horsepower.
+
+\subsection{Sensor Suite and Data Processing}
+
+Instead of the human operating abilities of the vehicle, the autonomous racing cars use the unique infrastructure called the \textbf{Skid} that supports the suite of sensors making autonomous travel possible. The core sensing elements include:
+\newpage
+\begin{itemize}
+    \item \textbf{Four radar sensors}: are used to measure distances to nearby objects and to detect moving objects.
+    \begin{figure}[hbtp]
+    \centering
+    \includegraphics[scale=0.3]{img/radarUnit.png}
+    \caption{Radars are used to measure distances to the nearby objects. \cite{AbuDhabiRacing2024}}
+    \label{figura:radarUnit}
+    \end{figure}
+    
+    \item \textbf{Three LiDAR (Light Detection and Ranging) units}: provide a high resolution 3D map of the surroundings, aiding in obstacle detection and environmental mapping.
+    \begin{figure}[hbtp]
+    \centering
+    \includegraphics[scale=0.215]{img/lidarSensor.png}
+    \includegraphics[scale=0.195]{img/lidar2.png}
+    \caption{The systems provide a 3D map of the surroundings. \cite{AbuDhabiRacing2024}}
+    \label{figura:lidarSensor}
+    \end{figure}
+
+    \newpage
+    \item \textbf{Seven high resolution cameras}: Capture visual data, used for image recognition, object classification, and lane detection.
+    \begin{figure}[hbtp]
+    \centering
+    \includegraphics[scale=0.3]{img/cameras.png}
+    \caption{Cameras are used for image recognition, object classification, and lane detection. \cite{AbuDhabiRacing2024}}
+    \label{figura:cameras}
+    \end{figure}
+
+    \item \textbf{Two GPS sensors}: To track the car in all the circuit. 
+    \begin{figure}[hbtp]
+    \centering
+    \includegraphics[scale=0.218]{img/frontgps.png}
+    \includegraphics[scale=0.20]{img/centergps.png}
+    \caption{Placement of the front and center GPS sensors used for real time positioning and trajectory optimization \cite{AbuDhabiRacing2024}.}
+    \label{figura:gps}
+    \end{figure}
+\end{itemize}
+
+The detailed information gathered from the sensors is relayed to an advanced onboard computer that interprets the data in real time to determine the most appropriate maneuvers to drive. The central processor serves as the vehicle's \textit{brain}, running advanced artificial intelligence algorithms that analyze sensor information and make decisions on control.
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.35]{img/computer2.png}
+\includegraphics[scale=0.36]{img/Computer.png}
+\caption{The Car Computer \cite{AbuDhabiRacing2024}.}
+\label{figura:computer}
+\end{figure}
+
+\subsection{Telemetry and Sensor Challenges}
+There exist additional categories of sensors. Specifically, these other sensors are designed to measure various parameters, including engine revolutions per minute (RPM), brake temperature, tire pressure, aerodynamic loads, and numerous other performance metrics. In modern autonomous racing, telemetry plays an even more critical role, providing real time feedback to AI models responsible for decision making on the track.
+
+A major challenge faced by telemetry systems is the extreme operating environments to which they are exposed. The racing environment exposes the sensors to extreme temperature variations, high level vibrations, and mechanical shocks that are capable of either altering the accuracy and lifetime of the sensors. Moreover, the high levels of data generated from various sensors require effective processing and communication that do not introduce latency in order to support real time decision making.
+
+\subsubsection{Reliability and Sensors Degradation}
+The reliability of sensors in high stakes racing environments is crucial for the accurate gathering of information. The major challenges that affect the effectiveness of sensors include:
+\begin{itemize}
+    \item \textbf{Thermal Stress: }the temperature differences encountered within a racing car can reach astonishing levels, with brake discs reaching temperatures over 1000 degrees Celsius, engine components operating under severe thermal stress, and rapid cooling being assisted by airflow. Such thermal fluctuations cause expansion and contraction of materials, thereby exerting stress on sensor devices. Prolonged exposure to these adverse conditions results in sensor drift, defined as a time dependent loss of measurement accuracy 
+    \cite{thermal_sensors}.
+    \item \textbf{Vibrational Impact: }Race cars are subjected to continuous vibrations from the engine, aerodynamics, and the quality of the track surface. High frequency vibrations can cause mechanical fatigue in sensor components, leading to gradual degradation in performance or outright failure. To mitigate these effects, sensors must be mounted using vibration dampening materials and be built with significant mechanical robustness \cite{vibration_sensors}.
+    \item \textbf{Material Degradation and Environmental Exposure: }apart from exposure to heat and vibration, sensors are exposed to many contaminants like dust, oil, moisture, and debris from the race environment. Such pollutants can lead to corrosion, electrical shorts, or interfere with the accuracy of sensor measurements. To increase the life of sensors, protective coatings, sealed housings, and high tech composite materials are often used \cite{sensor_protection}.
+\end{itemize}
+
+\subsubsection{Managing the Volume of Telemetry Data}
+A modern autonomous racing car is equipped with dozens of sensors, each generating large amounts of data per second. This scenario poses significant challenges in the areas of data collection, processing, and transmission. The main considerations involved include: 
+\begin{itemize}
+    \item \textbf{Real Time Data Processing: }telemetry data has to be processed in real time in order to enable timely feedback for artificial intelligence powered control systems. This requires the availability of high speed onboard computing units with parallel processing capabilities, often using FPGA (Field Programmable Gate Arrays) or GPUs to handle the high computational requirements \cite{real_time_processing}.
+    \item \textbf{Data Transmission Bottlenecks: }optimization of the transmission process of large telemetry datasets is necessary to reduce latency problems. Typically used wireless communication protocols are ultra wideband (UWB) telemetry and high speed optical fiber links. Because of limitations related to bandwidth, it is important to use advanced data compression techniques and to prioritize essential data streams \cite{data_transmission}.
+    \item \textbf{Data Storage and Long Term Analysis: }in order to enable post race analysis, it is important that high resolution telemetry data is stored in an optimal fashion. Distributed storage systems with cloud based analytical platforms are usually used to handle the large datasets generated over many races. Advanced artificial intelligence techniques like predictive analytics and anomaly detection are used to obtain useful insights from this data \cite{data_storage}.
+\end{itemize}
+
+\subsection{Decision Making and Vehicle Control}
+The commands generated by the unified artificial intelligence are sent to the \textbf{Behavioral Supervisory Unit (BSU)} that acts as the sub control mechanism responsible for carrying out the needed driving actions. The BSU will interact with the vehicle’s:
+\begin{itemize}
+    \item \textbf{Steering actuators}: control the direction of the front wheels according to decisions of artificial intelligence.
+    \item \textbf{Braking system}: Engages or releases the brakes to control speed and manage deceleration in corners.
+    \item \textbf{Throttle actuators}: Modulate acceleration based on real time conditions and grip levels.
+\end{itemize}
+
+\subsection{Autonomous Driving Levels}
+The Society of Automotive Engineers (SAE) classifies driving automation into six levels, from Level 0 to Level 5.
+\begin{itemize}
+    \item \textbf{Level 0}: no automation exists; the responsibility of performing every function rests on the human driver.
+    \item \textbf{Level 1}: driver support; the vehicle is able to support either steering or accelerating/deceleration but not at the same time.
+    \item \textbf{Level 2}: partial automation; the vehicle can control both steering and acceleration/braking, but a human driver must remain engaged.
+    \item \textbf{Level 3}: this level refers to conditional automation, where the car can handle all driving tasks under specific conditions; however, it requires human input when requested by the system.
+    \item \textbf{Level 4}: widespread automation; the car can operate independently in designated environments, without the need for human intervention.
+    \item \textbf{Level 5}: Full automation; the car can drive itself under all environmental conditions without any human intervention.
+\end{itemize}
+
+The autonomous cars used in autonomous racing fall under the category of \textbf{Level 4} autonomous vehicles. This is because of their capacity to move on their own on a pre determined racetrack independently of human intervention. However, unlike Level 5 systems, the cars are limited to controlled situations and rely on preprogrammed paths.
+
+\subsection{Deterministic vs Non Deterministic Decision Making}
+An essential distinction in the management structure of these vehicles is the nature of decision making at multiple levels of computation:
+\begin{itemize}
+    \item The \textbf{high level AI system} operates in a \textbf{non deterministic} manner. This means that its decision making is not fixed; instead, it develops according to changing circumstances. The AI continually refines its control methods through the use of reinforcement learning and data driven algorithms.
+    \item The \textbf{BSU (Behavioral Supervisory Unit)} is \textbf{deterministic} in its approach. It uses preprogrammed responses to manage inputs and uphold safety constraints to ensure consistent behavior and immediate responses to failures in the system or unexpected events.
+\end{itemize}
+
+The deployment of deterministic and non deterministic processing allows the self racing car to realize an optimum balance between adaptability and safety to guarantee superior performance in conjunction with strong control.
+
+\section{AI Agents in Decision Making for Autonomous F1 Cars}
+AI agents in autonomous racing cars function as intelligent systems. The systems utilize sensors, cameras, and computational programs to interpret the environment, make decisions, and interact with the racetrack conditions dynamically \cite{allaboutai}.
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.3]{img/AiAgents.png}
+\caption{The systems utilize sensors, cameras, and computational programs to interpret the environment, make decisions, and interact. \cite{allaboutai}}
+\label{figura:AIAgent}
+\end{figure}
+
+In a MAS, many artificial intelligence agents are assigned specific tasks, such as steering, braking, grip estimation and traction control. This cooperative work ensures proper monitoring and responsibleness in complicated racing situations.
+
+The structured decision making process in an autonomous F1 car involves multiple layers of data collection and analysis. MAS distributes workloads across agents, enhancing system efficiency.
+
+\subsection{Grip Estimation Agent}
+The grip estimation agent continuously monitors the tire surface interactions using sensor fusion techniques, including:
+\begin{itemize}
+    \item Tire pressure and temperature measuring sensors
+    \item Accelerometers and gyroscopes
+    \item Assessment of road conditions using combined cameras.
+\end{itemize}
+The sensors together measure the coefficient of friction, which allows the artificial intelligence system to adapt its acceleration and braking strategies \cite{toyota_research}.
+
+\subsection{Traction Control Agent}
+The traction control system prevents excessive wheel slip by dynamically apportioning power to the wheels through regulation.
+\begin{itemize}
+    \item Torque vectoring algorithms for real time applications.
+    \item Differential braking strategies
+    \item The application of reinforcement learning to improve power utilization in curves 
+\end{itemize}
+
+\subsection{High Frequency Sensor and Data Management}
+A significant challenge in autonomous Formula 1 racing relates to the handling of the large amount of sensor data generated at high frequencies. Artificial intelligence agents must efficiently process and filter the information to facilitate real time decision making. Data fusion from different sources, such as LiDAR, radar, cameras, and inertial sensors, enhances the accuracy of predictions about track conditions.
+
+\section{AI Based Grip Management in Formula 1 Vehicles}
+The study of grip in self driving Formula 1 (F1) cars is a relatively new area within the broader field of artificial intelligence (AI) research. While much work has already been done on AI controlled systems designed for autonomous operation on public roads, little work has been done on the specific dynamics involved with high performance cars on difficult racing tracks. One leading research center that has made significant progress with this field is the Toyota Research Institute (TRI), in partnership with Stanford University.
+
+\subsection{Current Research and Developments}
+Toyota Research Institute's Human Interactive Driving (HID) division has designed new AI techniques to make the car maintain the road better under challenging circumstances. They research making AI models that assist the human driver in better using the grip, most importantly in challenging situations such as  high speed cornering and sudden traction loss.
+\cite{tri2023}. 
+
+TRI isn't concentrated on autonomous vehicles, but on augmented intelligence, where the AI enhances the driver to make them better at their job. However, the methodologies developed have direct implications for autonomous racing vehicles. Their work includes:
+\begin{itemize}
+    \item AI driven drift control mechanisms to stabilize the vehicle and ensure proper grip.
+    \item Advanced machine learning models that predict and react to traction loss in real time.
+\end{itemize}
+
+Additionally, TRI’s work on AI powered track driving coaching demonstrates how real time feedback can assist in managing tire load distribution and lateral forces, crucial elements in grip optimization \cite{tri2023}. 
+
+\subsection{AI for Grip Optimization from Autonomous Drifting}
+Stanford University, in collaboration with TRI, has researched the use of artificial intelligence in synchronized drifting using Toyota Supras, demonstrating how AI technology can make split second decisions to maintain traction on low grip surfaces. This research has shown that:
+\begin{itemize}
+    \item The laws that regulate drifting are associated with the dynamics involved in vehicles on slippery or icy surfaces, providing critical insight on managing traction during difficult situations.
+    \item AI systems have the ability to compute and recompute ideal inputs for steering, throttle, and braking up to 50 times per second to maintain stability \cite{verge2024}.
+    \item Machine models have the capacity to adapt to varying track conditions, thus increasing their predictive precision with each lap.
+\end{itemize}
+
+The findings found are highly pertinent to autonomous Formula 1 cars, as maintaining maximum traction is vital for maximizing acceleration out of corners and ensuring stability under high speed braking.
+
+\subsection{Implications for Autonomous Formula 1 Racing}
+Applying TRI and Stanford’s findings to autonomous F1 racing presents several opportunities:
+\begin{itemize}
+    \item \textbf{AI driven grip prediction:} By leveraging machine learning, AI can anticipate grip fluctuations due to tire wear, temperature variations, and track conditions.
+    \item \textbf{Real time tire force distribution:} Autonomous vehicles possess the ability to improve tire force allocation, thus ensuring optimum cornering traction, as well as providing efficient acceleration or braking.
+    \item \textbf{Dynamic traction control:} Artificial Intelligence can regulate throttle and brake in real time using live telemetry data, thus maintaining stability when accelerating or braking hard.
+\end{itemize}
+
+\section{Grip Estimation in Autonomous Vehicles}
+In the context of autonomous Formula 1 racing, accurate estimation of tire road grip is crucial for achieving optimum performance and ensuring vehicle stability, especially when cornering at high speeds. In this context, two key parameters are defined: the \textit{cornering stiffness} and the \textit{lateral friction coefficient} \cite{Savarese2017}.
+
+\subsection{Cornering Stiffness}
+Cornering stiffness ($C_\alpha$) is the proportional relation that exists when the lateral force ($F_y$) generated by the tire varies with the slip angle ($\\alpha$), in the vicinity of zero slip angle\cite{Hwang2018}. This relation may be expressed as:
+
+\begin{equation}
+C_\alpha = \left. \frac{\partial F_y}{\partial \alpha} \right|_{\alpha=0}
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $F_y$ is the lateral force exerted by the tire,
+    \item $\alpha$ is the slip angle, defined as the difference between the direction the wheel is pointing and the direction of travel.
+\end{itemize}
+
+Cornering stiffness is a significant factor in defining the lateral dynamic behavior of an automobile and determining its ability to maintain control while cornering \cite{Gao2012}.
+
+\subsection{Lateral Friction Coefficient}
+The lateral friction coefficient ($\mu$) is used to quantify the maximum lateral force that can be generated before the tire loses its grip. It is defined as:
+
+\begin{equation}
+\mu = \frac{F_{y,\text{max}}}{F_z}
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $F_{y,\text{max}}$ is the maximum lateral force before slipping occurs,
+    \item $F_z$ is the normal force exerted on the tire (typically due to the vehicle's weight and aerodynamic downforce).
+\end{itemize}
+A higher $\mu$ indicates better grip, which is essential for high performance racing \cite{Bascetta2021}.
+
+\subsection{Estimation Techniques}
+\subsubsection{Recursive Least Squares (RLS)}
+The Recursive Least Squares (RLS) algorithm is used to estimate cornering stiffness dynamically \cite{Savarese2017}. It works by minimizing the difference between the measured and expected lateral force in the temporal context. In addition, the algorithm has an adaptive forgetting factor, which acts to balance the convergence speed with the stability of the estimator.\\
+The RLS algorithm iteratively updates an estimate of cornering stiffness ($C_\alpha$) based on real time measurements.
+
+\begin{itemize}
+    \item \textbf{Initialization:} Define the parameter vector $\theta$ and the covariance matrix $P$.
+    \item \textbf{Computation of RLS Gain:} Compute the Kalman gain $K$.
+    \item \textbf{Parameter Update:} Update the estimate of the parameter vector.
+    \item \textbf{Covariance Matrix Update:} Reduce confidence in previous estimates to improve adaptation to new data.
+\end{itemize}
+
+
+\begin{algorithm}
+\caption{Recursive Least Squares (RLS) for Cornering Stiffness Estimation}
+\begin{algorithmic}[1]
+\STATE \textbf{Initialize:}
+\STATE $\theta_0 \gets 0$ \quad (Initial parameter vector)
+\STATE $P_0 \gets \lambda^{-1} I$ \quad (Covariance matrix)
+\STATE \textbf{For each time step} $t$ \textbf{do:}
+\STATE \quad Measure slip angle $\alpha_t$ and lateral force $F_{y,t}$
+\STATE \quad Compute the regressor vector $\phi_t = [\alpha_t]$
+\STATE \quad Compute the prediction error $e_t = F_{y,t} - \phi_t^T \theta_{t-1}$
+\STATE \quad Compute the gain: $K_t = P_{t-1} \phi_t (\lambda + \phi_t^T P_{t-1} \phi_t)^{-1}$
+\STATE \quad Update the parameter estimate: $\theta_t = \theta_{t-1} + K_t e_t$
+\STATE \quad Update the covariance matrix: $P_t = \lambda^{-1} (P_{t-1} - K_t \phi_t^T P_{t-1})$
+\STATE \textbf{End for}
+\end{algorithmic}
+\end{algorithm}
+
+\begin{itemize}
+    \item $\theta_t$ is the parameter vector (the estimated cornering stiffness $C_\alpha$).
+    \item $P_t$ is the covariance matrix, representing confidence in the estimated parameters.
+    \item $K_t$ is the adaptive gain, determining how much weight is given to new data.
+    \item $\lambda$ is the forgetting factor, balancing the influence between past and recent data.
+\end{itemize}
+
+\subsubsection{Pacejka Tire Model Fitting}
+The \textit{Magic Formula} by Pacejka is a well known semiempirical tire dynamic explanation model. Using the model calibration with empirical data about the slip angle and lateral acceleration, the lateral friction coefficient may be calculated \cite{Wenzel2023}. Also, a reset mechanism has been added for enabling adaptation with respect to sudden grip level changes.
+
+\begin{itemize}
+    \item \textbf{Definition of Pacejka's Formula:}
+    \begin{equation}
+        F_y = D \sin \left( C \arctan \left( B \alpha - E (B \alpha - \arctan(B \alpha)) \right) \right)
+    \end{equation}
+    where $B, C, D, E$ are the Pacejka parameters.
+    \item \textbf{Initialization:} Set initial values for the parameters $B, C, D, E$.
+    \item \textbf{Optimization:} Minimize the error between estimated values and experimental data.
+    \item \textbf{Logical Reset:} Quickly adapt parameters in case of sudden grip variations.
+\end{itemize}
+
+\newpage
+\begin{algorithm}
+\caption{Pacejka Tire Model Fitting Algorithm}
+\begin{algorithmic}[1]
+\STATE \textbf{Initialize:}
+\STATE Choose initial parameters $B_0, C_0, D_0, E_0$
+\STATE Set learning rate $\eta$
+\STATE \textbf{For each time step} $t$ \textbf{do:}
+\STATE \quad Measure slip angle $\alpha_t$ and lateral force $F_{y,t}$
+\STATE \quad Compute predicted force:
+\STATE \quad $F_{y,\text{pred}} = D_t \sin(C_t \arctan(B_t \alpha_t - E_t (B_t \alpha_t - \arctan(B_t \alpha_t))))$
+\STATE \quad Compute error: $e_t = F_{y,t} - F_{y,\text{pred}}$
+\STATE \quad Update parameters using gradient descent:
+\STATE \quad $B_{t+1} = B_t - \eta \frac{\partial e_t}{\partial B_t}$
+\STATE \quad $C_{t+1} = C_t - \eta \frac{\partial e_t}{\partial C_t}$
+\STATE \quad $D_{t+1} = D_t - \eta \frac{\partial e_t}{\partial D_t}$
+\STATE \quad $E_{t+1} = E_t - \eta \frac{\partial e_t}{\partial E_t}$
+\STATE \quad \textbf{If sudden grip change detected:} Reset parameters
+\STATE \textbf{End for}
+\end{algorithmic}
+\end{algorithm}
+
+\begin{itemize}
+    \item $B$ is the \textbf{stiffness factor}, which determines how sharply the force builds up.
+    \item $C$ is the \textbf{curvature factor}, which controls the shape of the force curve.
+    \item $D$ is the \textbf{peak factor}, representing the maximum lateral force.
+    \item $E$ is the \textbf{eccentricity factor}, which modifies the arctangent function to better fit real tire behavior.
+    \item \textbf{Gradient Descent:} Used to update parameters iteratively by minimizing the error between the model and real world measurements.
+    \item \textbf{Logical Reset:} If a sudden grip variation is detected (e.g., rain or surface change), the parameters are recalibrated to maintain accuracy.
+\end{itemize}
+
+
+\subsubsection{Sensor Fusion and Observer Design}
+Data from gyroscopes, accelerometers and wheel speed sensors can be mixed using observer techniques such as Kalman filtering. This permit real time estimation accuracy while mitigating sensor noise \cite{Gao2012}.
+
+\subsection{Application in Machine Learning Algorithms}
+\subsubsection{Feature Engineering}
+Key considerations, such as expected cornering stiffness, lateral friction coefficients, skid angles, and tire forces, could serve as inputs to machine learning models that make prognoses about auto dynamics \cite{Savarese2017}.
+
+\subsubsection{Adaptive Control}
+Machine learning algorithms can use real time grip estimates to adjust control strategies dynamically, optimizing performance while maintaining safety \cite{Hwang2018}.
+
+\subsubsection{Anomaly Detection}
+The detection of differences between predicted and real grip values allows for the rapid identification of anomalies, such as tire degradation or road surface irregularities\cite{Bascetta2021}.
+
+\section{Influence of Ackermann Geometry on Grip in Cars}
+Ackermann steering geometry plays a major role in the lateral grip and handling of the vehicle in steady state cornering. In autonomous Formula 1 cars, optimizing the Ackermann geometry to achieve higher grip and stability, particularly while cornering at high speed, is crucial. Some recent research studies have focused on tire slip angles, lateral forces, and optimum steering angles for improved cornering performance\cite{Jambukolam2022}.
+
+This section discusses the impact of Ackermann geometry on traction with a focus on the \textbf{nonlinear} nature of tire adhesion under significant loading, a critical factor affecting autonomous vehicle dynamics.
+
+\subsection{Ackermann Geometry and Its Effect on Grip}
+Ackermann steering ensures that during a turn, the inner and outer wheels follow concentric paths, minimizing tire slip and optimizing grip. The actual situation, however, is marked by several complexities:
+\begin{itemize}
+    \item \textbf{Slip Angle Discrepancies:} The external and internal tires have different slip angles due to load transfer dynamics and differences in cornering stiffness.
+    \item \textbf{Load Sensitivity:} The lateral force generation capability of a tire is nonlinear and depends on the vertical load \cite{Pacejka2012}.
+    \item \textbf{Tire Deformation Effects:} At high speeds, the tire compliance alters the effective slip angles and thus the desired Ackermann correction.
+\end{itemize}
+
+\section{Nonlinear Behavior of Grip at High Loads}
+One of the most challenging aspects of optimizing grip in autonomous racing is accounting for the nonlinear behavior of tire forces under high vertical loads. The lateral force ($F_y$) generated by a tire does not increase linearly with the normal load ($F_z$). Instead, it follows a saturation curve, which can be described using Pacejka’s Magic Formula \cite{Pacejka2012}.
+
+During high loads, the lateral force reaches a maximum and then decreases due to tire saturation. This behavior poses significant challenges in autonomous racing since exceeding the optimal load range reduces grip instead of increasing it. An adaptive steering and traction control system must therefore be created to ensure that the car operates within the grip optimum region.
+
+\section{Optimizing Steering for Maximum Grip}
+To mitigate the grip saturation, recent research suggests:
+\begin{itemize}
+    \item \textbf{Load Aware Slip Angle Correction:} Adjusting the steering input to align with the desired slip angle for given vertical loads \cite{Jambukolam2022}.
+    \item \textbf{Machine Learning Based Optimization:} Training artificial intelligence models to predict changes in grip and adjust Ackermann parameters dynamically.
+\end{itemize}
+
+The findings in \cite{Jambukolam2022} suggest that \textbf{autonomous vehicles' operation efficiency would be greatly improved through the real time measurement of lateral force saturation}. An autonomous Formula 1 car, using high frequency sensor data and control mechanisms based on artificial intelligence, has the ability to make its path more refined to achieve the maximum grip in corner situations.
+
+\section{The Electronic Stability Program (ESP)}
+In order to begin the implementation process, I first understood how modern Electronic Stability Program (ESP) systems operate.\\
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.3]{img/esp.jpg}
+\caption{The Electronic Stability Program goal.}
+\label{figura:ESP}
+\end{figure}
+
+The Electronic Stability Program (ESP) is a critical feature of modern vehicles, working to improve stability by detecting and correcting situations of loss of traction. In this research, the working processes of ESP are explored, with specific data used in the decision making process explained. Through an understanding of how ESP detects instability in a vehicle, we propose using the same dataset to develop a predictive machine learning model that can prevent traction loss proactively, as opposed to correcting it after the incident. The aim is to determine if acceleration in turns can be optimized without compromising stability.
+
+\subsection{ESP System and Sensor Data}
+ESP operates via continuous monitoring of several variables to determine whether a vehicle stays on its intended route. The key elements involved in this process include:
+
+\begin{itemize}
+    \item \textbf{Wheel Speed Sensors: }These sensors measure the rotational speed of each wheel and detect any differences that can indicate wheel slip.
+    \item \textbf{Steering Angle Sensor: }It detects the desired path of the operator by evaluating the steering angle and the frequency of steering inputs.
+    \item \textbf{Yaw Rate Sensor: }The yaw rate sensor measures the rotation of the vehicle around the vertical axis, helping to determine if the car is oversteering or understeering.
+    \item \textbf{Lateral acceleration sensor: }This sensor measures the lateral forces acting on the vehicle, thus indicating whether the vehicle is experiencing traction or entering a skid.
+    \item \textbf{Brake and Throttle Position Sensors: }These sensors provide data related to autonomous driver behaviour, which helps the system determine if instability is caused by acceleration or braking.
+\end{itemize}
+All these data are extremely beneficial for the operations performed by the ESP. However, to tune the performance of the vehicle to its maximum level in cornering conditions while at the same time preventing the loss of grip, these data by themselves are insufficient. It is necessary that the set of data includes other parameters such as tire wear, tire temperature, and thermal conditions at different points around the track corners. For even greater accuracy, it would be wise to include considerations of the tire compound as well as the cleanliness and grain of the asphalt at each particular turn. While obtaining all these data points is a very daunting task, a greater amount of information allows us to better take advantage of the car's potential.
+\noindent For a complete explanation of the ESP system, including sensor usage and the forces acting on the vehicle \ref{figura:forces}, please refer to the following article  \cite{Andersson1017269}.
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.5]{img/forces.PNG}
+\caption{Forces affecting a vehicle.}
+\label{figura:forces}
+\end{figure}
+
+\newpage
+\subsection{From Correction to Prediction: \\Machine Learning for Grip Estimation}
+Current ESP systems intervene reactively, stabilizing the vehicle once traction loss is detected. However, using the same data in a predictive framework enables the prevention of instability before it occurs. This can be achieved through machine learning techniques discussed in the following sections.\\
+The use of reinforcement learning algorithms enables the creation of a system that can adapt dynamically to real time tracking conditions, even without full access to the aforementioned data, through the use of the vehicle's geographical coordinates. However, it should be stressed that such key parameters as the forces acting on the vehicle and temperature readings are crucial for making accurate predictions and should not be ignored.
+
+\newpage
+\subsection{Input Features for the Learning Model}
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|p{5cm}|p{5cm}|}
+\hline
+\textbf{Category} & \textbf{Variables} & \textbf{Why It Matters} \\
+\hline
+Kinematics & Speed, Acceleration, Brake, Steering Angle & Describe vehicle motion and driver intent. \\
+\hline
+Forces & Lateral/Longitudinal Acceleration, Yaw Rate & Detect proximity to physical grip limits. \\
+\hline
+ESP Data & Wheel Speeds, Steering Input & Identify slip and trajectory mismatch. \\
+\hline
+Grip Factors & Tire Temp/Pressure, Wheel wear & Strongly affect grip; enable anticipatory modeling. \\
+\hline
+Track Context & Position & Adapt driving style to the geometry of the road. \\
+\hline
+Temporal Window & Last 1--2 seconds of time series data & Capture trends for predictive learning. \\
+\hline
+\end{tabular}
+\caption{Input variables that have to be fed into the learning model.}
+\end{table}
+
+These data collectively form the state input vector to the reinforcement learning algorithm and play a crucial role in learning control policies that reduce loss of grip while maximizing performance. The selected features enable both reactive and predictive abilities. I think these are the data to use for our algorithm.
+
+\subsection{Conclusions on ESP system}
+We may utilize the same sensor data from ESP systems to develop models that enhance vehicle performance. Rather than simply responding to slipping, machine learning models can forecast grip levels, enabling  autonomous drivers to make smarter decisions.
+
+\section{A Machine Learning Approach}
+Traditional physics based modeling tends to struggle to represent real time grip variation due to uncertain environmental conditions. As such, machine learning (ML) techniques have been explored to leverage past grip information to make more precise predictions. \cite{Pacejka2012}.
+
+\subsection{Importance of Temporal Sequences in Grip Prediction}
+Practically speaking, grip must not be seen as something static; it is actually a dynamic event that builds up over time. Considering only the current state may lead to inaccurate predictions, as grip is influenced by past conditions. The examples that follow offer clear indicators of why antecedent time periods play a critical part in modeling grip.
+
+\newpage
+
+\subsubsection{Grip has a delayed influence}
+Not all effects manifest instantly, some take time to propagate through the system:
+
+\textbf{Tire Degradation:}
+\begin{itemize}
+    \item Grip is affected by tire wear.
+\end{itemize}
+
+
+\textbf{Tire Temperature:}
+\begin{itemize}
+    \item When a driver brakes hard, the tire temperature does not increase immediately heat transfer to the compound requires time.
+    \item When a car moves through a long, straight stretch with little load on the tires, it is likely that the tires have cooled down and will have lost some of their traction even though now it is being subjected to heavy braking forces.
+\end{itemize}
+
+
+\subsubsection{Why Sequential Data is Essential}
+A sequence of previous states is necessary because grip is a function of cumulative stress, thermal dynamics, and material response over time. Viewing grip as a series of independent, instantaneous values fails to realize these complex interdependencies, leading to oversimplified and potentially inaccurate answers.
+\newpage
+
+
+\subsection{Machine Learning Models}
+The following models are compared subsequently:\\\\
+\textbf{Super visioned Learning:}
+\begin{itemize}
+    \item \textbf{LSTM:} It gains the ability to comprehend long term dependencies with regard to grip patterns, making it suitable for pattern recognition over extended time periods or repeated iterations.
+    \item \textbf{Transformers:} Uses self attention mechanisms, due to highlight important features in time series grip information. With the difference of LSTMs, Transformers do not suffer from vanishing gradient issues and are more efficient in retaining long range dependencies, this allow them to remember grip conditions over long temporal distances.
+    \item \textbf{CNN 1D:} or one dimensional Convolutional Neural Networks, aim to recognize spatial patterns in time series data through the use of convolutional filters over a given window of past grip data. These networks exhibit particular effectiveness at modeling short term dependencies and are marked by fewer computational requirements in comparison to LSTMs and Transformers. CNN 1D models are particularly useful in situations where predictions have to be made over a limited temporal range, such as focusing only on a few seconds of past data instead of using an entire lap.
+\end{itemize}
+\textbf{Not Supervisioned Learning:}
+\begin{itemize}
+    \item \textbf{Reinforcement Learning:} It builds an optimized strategy for performance improvement for real world applications by directly interacting with the environment. Unlike with supervised learning methods, it never uses labeled data; instead, it learns through a reward function that measures grip performance, stability, and lap time improvements.
+\end{itemize}
+
+\subsection{Classification vs Regression in Autonomous Racing}
+
+Before establishing the decision making model, it is important to determine if the problem is a classification problem or a regression problem.
+
+Within the framework of modeling the car as a multiple agent system, the main agent makes a decision about whether to accelerate or decelerate while driving through a curve; hence, the problem under consideration can be qualified as a \textbf{classification} problem. The agent does not determine the exact amount of deceleration or acceleration but makes a binary decision: accelerate or brake. There is a secondary agent, incorporated within the car, responsible for regulating the amount of force on the accelerator or brakes according to this decision.
+
+By way of contrast, when the problem is framed as a regression problem, my agent must determine not only whether to speed up or slow down, but must determine also the exact force of such actions. In addition, the decision must be coordinated with other agents of the system, including those responsible for the identification of approaching vehicles as well as the autonomous driving agent who is responsible for the overall control of the vehicle.
+
+
+\section{Choosing the Right Algorithm}
+
+Once the nature of the problem is understood, we can move on to selecting the appropriate algorithm. There are two main approaches: the first approach is using autonomous LSTMs or leveraging transformers. 
+
+Transformers and LSTMs have the advantage of retaining long term dependencies, meaning that every prediction does not rely solely on the current time window but also considers the car's behavior in turns from previous laps. This makes them particularly effective when historical driving patterns influence future decisions.
+
+If past laps' behavior is not relevant, and the focus is limited to a fixed time window such as the last five seconds then simpler 1D convolutional neural networks (CNNs) can be employed. These networks take a consistent input window of temporal data and make predictions based only on that specific sequence, without retaining information outside the given timeframe.
+
+The choice of approach is also influenced by the dataset composition. For instance, if tire wear data is absent from the dataset, it could impact predictions significantly, as tire condition plays a crucial role in grip estimation.
+
+Regardless of the method, supervised learning is required, meaning that labeled data must be available. This labeling process must indicate, for each time frame, whether to accelerate or brake and, in the case of regression, by how much. Creating this ground truth typically requires a driving simulator where an expert driver provides optimal driving demonstrations.
+
+The second approach is Once the nature of the problem is understood, we can move on to selecting the appropriate algorithm. There are two main approaches: the first approach is using autonomous LSTMs or leveraging transformers. 
+
+Transformers and LSTMs have the advantage of retaining long term dependencies, meaning that every prediction does not rely solely on the current time window but also considers the car's behavior in turns from previous laps. This makes them particularly effective when historical driving patterns influence future decisions.
+
+If past laps' behavior is not relevant, and the focus is limited to a fixed time window such as the last five seconds then simpler 1D convolutional neural networks (CNNs) can be employed. These networks take a consistent input window of temporal data and make predictions based only on that specific sequence, without retaining information outside the given timeframe.
+
+The choice of approach is also influenced by the dataset composition. For instance, if tire wear data is absent from the dataset, it could impact predictions significantly, as tire condition plays a crucial role in grip estimation.
+
+Regardless of the method, supervised learning is required, meaning that labeled data must be available. This labeling process must indicate, for each time frame, whether to accelerate or brake and, in the case of regression, by how much. Creating this ground truth typically requires a driving simulator where an expert driver provides optimal driving demonstrations.
+
+The second approach is unsupervised learning through reinforcement learning, which is well documented in the literature, with several available libraries. However, RL introduces the challenge of determining when the grip control agent should activate. If it does not replace the autonomous driving algorithm entirely, a clear activation trigger is necessary. Training the agent exclusively for cornering could lead to an issue where it optimizes turns efficiently but exits them poorly, causing delays on straight sections.unsupervised learning through reinforcement learning, which is well documented in the literature, with several available libraries. However, RL introduces the challenge of determining when the grip control agent should activate. If it does not replace the autonomous driving algorithm entirely, a clear activation trigger is necessary. Training the agent exclusively for cornering could lead to an issue where it optimizes turns efficiently but exits them poorly, causing delays on straight sections.
+
+
+\section{Reinforcement Learning Strategy for Grip Optimization}
+A potential solution to the grip optimization problem using reinforcement learning follows a structured three phase approach:
+
+\begin{enumerate}
+    \item \textbf{Mimicking the base agent}: Initially, our RL agent learns from the existing algorithm implemented in the car, which is designed to complete the track as quickly as possible.
+    \item \textbf{Training on curves}: Once the agent has successfully learned the base behavior, the original algorithm is disabled, and the RL agent is trained specifically for cornering, ignoring straight sections.
+    \item \textbf{Providing feedback to the base agent}: After training, the base agent remains responsible for overall trajectory planning, while the specialized grip agent is activated near corners to provide recommendations on whether further acceleration is possible to push the car closer to its performance limits.
+\end{enumerate}
+Choosing this approach requires careful selection of appropriate reward functions. A fundamental reward metric is the time taken to complete a turn if the RL agent achieves a shorter cornering time than the original system, it receives a positive reward. However, if the turn exit is suboptimal, even with a faster cornering time, a negative reward may be introduced to penalize poor exits that result in lost time on straights.
+
+Within this RL framework, we can integrate any of the previously discussed models LSTMs, transformers, or 1D CNNs. The reinforcement learning protocol remains consistent, but selecting the best model without extensive testing is challenging, as different architectures may yield varying results depending on the specific characteristics of the driving environment and dataset.
+
+\section{Reinforcement Learning Algorithms: SAC vs PPO}
+To combat the difficult and dynamic characteristics of grip prediction under aggressive driving maneuvers, we explored two reinforcement learning algorithms: 
+\textbf{Soft Actor Critic (SAC)} and \textbf{Proximal Policy Optimization (PPO)}. Both are well known approaches to continuous control problems with different advantages.
+
+\subsection{Soft Actor Critic (SAC)}
+SAC is an off policy actor critic algorithm that incorporates the entropy of the policy into the reward and, therefore, promotes exploration and system stability. It learns a stochastic policy and a value function and optimizes them by using the soft policy iteration. SAC's high dimensional, continuous action space handling and high sample efficiency are among the most remarkable strengths.
+
+\vspace{0.2cm}
+\noindent \textbf{Key Characteristics of SAC:}
+\begin{itemize}
+    \item Off policy learning with entropy regularization.
+    \item Supports continuous actions (for throttle, brake, and steering).
+    \item Highly sample efficient and stable during training.
+    \item Capable of incorporating temporal models (LSTM, CNN, Transformers).
+\end{itemize}
+
+\subsection{Proximal Policy Optimization (PPO)}
+PPO is a policy gradient method that is designed to improve training stability using clipped surrogate objectives. PPO operates in an on policy manner and is also said to be simple to use and robust in a wide range of environments.
+
+\vspace{0.2cm}
+\noindent \textbf{Key Characteristics of PPO:}
+\begin{itemize}
+    \item On policy algorithm with clipped updates for training stability.
+    \item Easier to train compared to many actor critic methods.
+    \item Widely used in simulation platforms such as CARLA.
+\end{itemize}
+
+\subsection{Comparison: SAC vs PPO}
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Feature} & \textbf{SAC} & \textbf{PPO} \\
+\hline
+Learning Type & Off policy & On policy \\
+\hline
+Exploration Strategy & Maximum entropy & Clipped surrogate objective \\
+\hline
+Action Space Support & Continuous & Continuous (and discrete) \\
+\hline
+Training Stability & High & Very High \\
+\hline
+Reactivity in Fast Dynamics & High & Moderate \\
+\hline
+Sample Efficiency & High & Moderate \\
+\hline
+Integration with Temporal Models & Excellent & Good \\
+\hline
+\end{tabular}
+\caption{Comparison between SAC and PPO for grip prediction in dynamic driving scenarios.}
+\end{table}
+
+\noindent In our environment predicting loss of grip and adapting in real time \textbf{SAC is the better option} since it can learn effectively in high dimensional, high speed worlds. But PPO can be employed at early stages of experimentation since it is easier and more stable to train.
+
+\subsection{Relevant Papers}
+\begin{enumerate}
+    \item \textbf{LSTM with Attention \cite{Wen2023}:} The attention in the LSTM model employed here compensates for the limitations of traditional encoder decoder LSTM in learning long term dependencies within time series better. It is particularly helpful for grip estimation, where memory for previous grip statuses for a few laps is essential for optimal real time decisions.
+
+    \begin{itemize}
+        \item \textbf{Traditional LSTM:} Remembers previous information but struggles with long term dependencies.
+        \item \textbf{LSTM with Attention:} Complements long term memory with further emphasis on what is most relevant from the past
+        \item \textbf{Transformers:} Improve LSTM and handle the entire sequence in parallel.
+    \end{itemize}
+
+    \item \textbf{Transformers for Time series forecasting \cite{Riva2021}:}  The article employs a transformer based approach for time series forecasting, with a comparison drawn with traditional LSTM models. The proposed approach leverages the property of self attention for better forecasting of sequential data through effective capture of long range dependencies.
+
+    \item \textbf{Reinforcement Learning with LSTM \cite{Bakker2001}:} Grip is a condition dependent variable with time, for exemple: road condition and past wear on the tires. Historical data may predict grip evolution with the aid of LSTMs, which may help enhance corner strategy. RL and LSTM can provide adaptive vehicle control with road memory and current conditions.
+
+    In particular, this paper discusses \textbf{non Markovian tasks}, and they are highly relevant for us because grip control is highly non Markovian. The grip of a vehicle is not determined on the basis of what is currently occurring but on what has been happening previously such as:
+    \begin{itemize}
+        \item Tire wear over previous laps.
+        \item Track conditions (asphalt type, temperature variations).
+        \item Past driving actions (braking, acceleration patterns).
+    \end{itemize}
+    Normal RL with a state alone may not be sufficient. With the addition of LSTMs, Transformers, or Attention, there is a better understanding with predictions, and the system is ready for non Markovian tasks.
+\end{enumerate}
+
+
+\subsection{Simulation Environment: CARLA vs Assetto Corsa}
+Simulators are extremely important for safe, reproducible, and controlled testing of autonomous systems. CARLA is a fine example of such a role as it has received widespread recognition as a community driven platform for academic research, due to its end to end simulation of sensors, application programming interfaces that are customizable for autonomous cars, as well as its physics features that are fully configurable through the power of Unreal Engine and NVIDIA PhysX technology \cite{carla2024}.\\
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.4]{img/carla.png}
+\caption{Carla simulator. \cite{driverBehaviorCarla2021}}
+\label{figura:carlaSimulator}
+\end{figure} 
+\\CARLA is equipped with a state of the art physics engine along with tunable vehicle dynamics, making it suitable for various autonomous driving use cases. However, when attention is diverted to scenarios specific to motorsports, and more specifically to high speed cornering and grip improvement, several limitations are evident:
+
+\begin{itemize}
+    \item \textbf{Lack of racetrack environments:}  CARLA lacks pre existing race tracks. Creating or importing new tracks is a necessity, which increase the difficulty.
+    \item \textbf{Simplified grip model:} uses a simple grip model that excludes elaborate tire dynamics models, i.e., Pacejka's Magic Formula, that are normally employed by simulation motorsport software.
+    \item \textbf{Limited environmental realism:} Parameters such as tire degradation, temperature variation and asphalt texture must be manually implemented.
+    \item \textbf{Basic slip modeling:} Slippage and loss of traction are modeled by using static friction parameters that it is not a true dynamic transition or complex contact interactions.
+\end{itemize}
+
+On the other hand, \textbf{Assetto Corsa}, a sophisticated racing simulation video game developed by Kunos Simulazioni, focuses on the realism of motorsport and provides several advantages\cite{kunosAssetto2023}:
+
+\begin{itemize}
+    \item \textbf{Realistic tire model:} The tyre model installed in Assetto Corsa uses a variation of the Pacejka model, with dynamic adjustment of grip, slip, and responsiveness to the load.
+    \item \textbf{Environmental realism:} Tire temperature, wear, pressure, and the track's rubbering are modeled in a systematic fashion and can dynamically impact grip.
+    \item \textbf{Data accessibility:} Data is improved by the use of modification interfaces and telemetry tools, in particular, those exemplified by Shared Memory APIs, making it easier to obtain real time data necessary for machine learning model training.
+    \item \textbf{Existing racetracks:} There are a big range of professional racing tracks and a large modding community, thus making it possible to simulate whatever motorsport scenarios.
+\end{itemize}
+
+Considering these features, \textbf{Assetto Corsa may represent a good simulation environment} for grip prediction and optimization in high performance racing contexts. Its accuracy in simulating real world motorsport environments both physical dynamics and measurable telemetry makes it particularly useful for training reinforcement learning agents that depend on strong and temporally coherent feedback.
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.5]{img/assCor.png}
+\caption{Assetto Corsa simulator. \cite{assettocorsa2025}}
+\label{figura:assCorsa}
+\end{figure}
+
+It is important to notify that Assetto Corsa, as a commercial product, was not designed with the aim to research on autonomous vehicles. The integration of autonomous control requires additional engineering efforts, such as the development of custom control structures, the use of game telemetry, and the potential use of third party tools like \textit{SimHub} or middleware APIs \cite{ac_telemetry}
+
+Despite this, the trade off among the complexity of integration and the accuracy of simulation can be great, especially when accurate grip modeling is essential to the training and evaluation of algorithms.
+
+\subsection{ML tequiches conclusions}
+It is important to analyse the available dataset to determine which data features can be used for training. The use of a driving simulator is essential for understanding the types of data that it can provide. However, for a hard task like this, it is difficult for the simulator to accurately replicate real world grip, as it is made on predetermined models that do not fully capture reality. Therefore, a dataset from real sensors will be necessary, and special attention must be given to testing the model within the simulator.
+
+
+Since this approach pushes the car to its limits, obtaining high quality labeled data for supervised learning is challenging. Therefore, reinforcement learning appears to be the most viable method, incorporating a model such as a 1D convolutional neural network or, if considering past time steps, an LSTM. The choice of model depends on the specific requirements of the task, but the overall reinforcement learning protocol remains unchanged.
+
+\chapter{Experimental Work}
+As discussed in the previous sections, now we focus on conducting experimental investigations aimed at predicting grip levels during vehicle navigation along the track.
+
+\section{Selection of the Simulation Environment}
+The first significant task was to locate a reliable source of data to feed into the grip learning models for training and testing. \\
+
+It was observed that there are no open datasets with full telemetry data for race cars, particularly with a number of significant grip measurements. Many of the available resources either lack sufficient variety in data types or contain signals with minimal dynamic variation, thereby limiting their usefulness for developing robust predictive models.\\\\
+
+Due to these constraints, having considered performance, realism, and cost for our budget, we selected a driving simulator for data gathering. After consideration, we selected \textbf{Assetto Corsa}, a popular racing simulator developed by Kunos Simulazioni. Assetto Corsa provided a sufficient level of realism, adaptability, and affordability. Although it is a racing simulator for entertainment purposes, its physics engine is quite sufficient for conducting preliminary studies of vehicle dynamics and driver modeling.\\
+
+A more capable simulation platform will be appropriate for this type of project. One example is the \textbf{Avicar Driving Simulator} used by Technology Innovation Institute (TII). Avicar is a simulator designed for dedicated research into self-driving cars. It possesses extremely realistic physics of the car and is capable of generating real-time scenery. It even has simulation of real sensors. It enables end-to-end testing of perception, decision-making, and control systems in complex, dynamic environments. It even supports detailed models for tire simulation, such as temperature, wear, and grip, which will be fantastic for research into grip prediction and control.\\
+
+But effective simulation is typically only for large research organizations or too expensive to be employed. Due to having a constrained budget, the utilization of Assetto Corsa permitted us to initiate our experiments as well as accrue valuable data for training machine learning models.
+
+\newpage
+
+\subsection{System Installation and Setup}
+
+\subsubsection{Environment Preparation}
+o begin the experimental phase, the first step is to set up the environment that can successfully interface with the Assetto Corsa simulator and efficiently collect telemetry data. This setup consists of several software elements:
+
+\begin{itemize}
+    \item \textbf{Assetto Corsa:} To obtain and install \textit{Assetto Corsa}, one has to use the Steam platform. This simulation software will provide the environment for generating data for all experimental procedures \cite{assettocorsa2025}.
+    
+    \item \textbf{Content Manager:} Download and configure \textit{Content Manager} from the URL given in the citation \cite{contentmanager2025}. It is a sophisticated launcher as well as a management platform for Assetto Corsa, providing extended control over simulation variables, telemetry, as well as real-time car data. Its flexibility and overall access to all configuration options make it a valuable asset for serious research applications, as we can see in picture \ref{figura:CM}.
+    \begin{figure}[hbtp]
+    \centering
+    \includegraphics[scale=0.26]{img/cmF.PNG}
+    \caption{Example of content manager.}
+    \label{figura:CM}
+    \end{figure}
+    
+    \item \textbf{Microsoft Visual C++ Redistributable:} Install the \textit{Microsoft Visual C++ 2015-2019 Redistributable} to ensure compatibility with libraries and shared memory extensions used by Assetto Corsa apps \cite{visualcpp2025}.
+    
+    \item \textbf{MS-MPI (Microsoft Message Passing Interface):} Install \textit{MS-MPI v10.1.3} \cite{msmpi2025}. This standard communication protocol enables efficient and fast data transfer between the simulator and external processes, improving the synchronization of telemetry streams.
+    
+    \item \textbf{Python Environment:}
+    \begin{itemize}
+        \item \textbf{Python 3.3.5:} Internal uses of Assetto Corsa are implemented using the \textit{Python 3.3.5} interpreter. Therefore, having the Python 3.3.5 installed on the device is a necessity so that Python programs of the game can import standard packages, like \texttt{socket}, successfully without having a conflict of compatibility.
+        \item \textbf{Python 3.9 (or higher):} In order to set up and run the external machine learning pipeline, responsible for data logging, model training, and inference, one must have a current version of Python installed, with version 3.9 being tested. The latest versions of Python offer better performance, security features, and support for the latest machine learning libraries such as TensorFlow, PyTorch, and scikit-learn.
+    \end{itemize}
+\end{itemize}
+
+In the following image, we can see an exemplification, figure \ref{figura:extractionData}:
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.24]{img/SharedMemory.png}
+\caption{Extraction data process.}
+\label{figura:extractionData}
+\end{figure}
+
+
+\subsubsection{Python Environment Setup: Anaconda}
+For the Python 3.9 environment, we chose to use \textbf{Anaconda},  a popular distribution that is widely favored by professionals who work with data science and machine learning \cite{anaconda2025}.
+Anaconda simplifies environment management by providing:
+
+\begin{itemize}
+    \item \textbf{Precompiled libraries:} Comprising essential packages like NumPy, TensorFlow, PyTorch, scikit-learn, and pandas, are precompiled and optimized, thus reducing installation issues and improving performance.
+    \item \textbf{Environment Isolation:} This feature allows for creating separate virtual environments, hence preventing inter project dependency conflicts. Such a feature becomes especially important while using the Python 3.3.5 version as necessitated by Assetto Corsa applications, combined with using the Python 3.9 version within the machine learning process.
+    \item \textbf{Simplified Package Management:} \texttt{Conda} provides the easy installation, updating, or uninstallation of packages with their respective dependencies using a minimal set of commands.
+    \item \textbf{Cross platform compatibility:} Anaconda can be accessed under Windows, macOS, as well as Linux, hence making it more flexible for future project development.
+\end{itemize}
+Given the complexity of machine learning projects and the need to manage multiple software packages, such as reinforcement learning libraries such as \texttt{Stable-Baselines3}, Anaconda provides a stable, trustworthy, and efficient base for development.
+
+\subsubsection{Why This Setup Is Necessary}
+\begin{itemize}
+    \item \textbf{Python Integration:}  Python is crucial for this project because it provides fast prototyping capabilities, library support and shared memory communication with simulators. 
+    \item \textbf{Content Manager Importance:} Assetto Corsa’s base launcher offers only basic options configuration, instead Content Manager unlocks extensive telemetry customization, mod support, session scripting, and easy access to detailed telemetry exports, making it highly valuable for scientific and data driven applications.
+\end{itemize}
+
+\subsection{Vehicle Selection}
+The main goal of the current research is to improve the stability characteristics of a race car employed for autonomous racing competitions; as such, it was important to select a virtual car under the simulation environment that replicates as accurately as possible the technical details and performance characteristics of real autonomous racing cars.\\
+
+The selection criteria were determined after a detailed analysis of the modern trends exhibited by current autonomous racing series cars, specifically those used in the Abu Dhabi Autonomous Racing League (A2RL) and similar competitions. Priority was given to finding a car setup in \textbf{Assetto Corsa} that accurately reflected the mechanical performance and behavioral characteristics, thus ensuring meaningful and relevant results.\\
+
+The most significant attributes for the matching process are outlined within the summary that follows:
+
+\begin{longtable}{|l|l|}
+\hline
+\textbf{Feature} & \textbf{Specification} \\ \hline
+Chassis Type & Single seater (Formula 2 / Indy Lights style) \\ \hline
+Vehicle Weight & 600–700 kg \\ \hline
+Aerodynamics & High downforce configuration \\ \hline
+Acceleration & Turbocharged inline 6 cylinder engine \\ \hline
+Driver Aids & No traction control, no ABS \\ \hline
+Chassis Manufacturer & Similar to Dallara \\ \hline
+Engine Type & 2.0L turbocharged or naturally aspirated \\ \hline
+Power Output & Approximately 400 horsepower \\ \hline
+Suspension System & Pushrod suspension \\ \hline
+Gearbox & Sequential 6 speed transmission \\ \hline
+Aerodynamic Design & Modern single seater aerodynamics \\ \hline
+\caption{Target specifications for vehicle selection in Assetto Corsa}
+\label{tab:vehicle_specifications}
+\end{longtable}
+
+The right car model must be chosen for the machine learning algorithms that are derived from telemetry data to be readily applicable to real-life applications. Changes to mass distribution, aerodynamics, or chassis dynamics can negatively alter the accuracy of the generated models of grip predictability.
+
+\subsubsection{The Best Similar Car}
+During the selection process, it became progressively apparent that a car with all the given technical requirements was absent from the standard Assetto Corsa offering. However, with the facilities offered by \textbf{Content Manager} combined with the active community of people who are releasing modifications for Assetto Corsa, the range of cars available for selection could be extended, making the selection of a more appropriate model possible.\\
+
+Upon thorough inspection, the \textbf{Dallara 224 F2 2024} modification \cite{dallara224mod}, crafted by skilled community modders, was chosen as the most representative of the specifications we needed for our testing. This car \ref{figura:dallara} was especially chosen because of its specially designed shape, which sought to mimic the latest model of Formula 2 cars, with a focus on real performance behavior.
+
+\newpage
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.22]{img/dallara.png}
+\caption{The Dallara 224 F2 2024 Car.}
+\label{figura:dallara}
+\end{figure}
+
+The selected vehicle presents the following specifications:
+
+\begin{longtable}{|l|l|}
+\hline
+\textbf{Simulator} & Assetto Corsa \\ \hline
+\textbf{Brand} & Dallara \\ \hline
+\textbf{Model} & 224 \\ \hline
+\textbf{Power Output} & 620 hp \\ \hline
+\textbf{Torque} & 570 Nm \\ \hline
+\textbf{Weight} & 715 kg \\ \hline
+\textbf{Power to Weight Ratio} & 1.15 kg/hp \\ \hline
+\textbf{0--100 km/h Acceleration} & 2.90 seconds \\ \hline
+\textbf{Available Colors} & 2 \\ \hline
+\textbf{Drive Type} & Rear Wheel Drive (RWD) \\ \hline
+\textbf{Authors} & benjamin00, LONG, Onion, rricky \\ \hline
+\caption{Specifications of the selected Dallara 224 F2 2024 mod}
+\label{tab:dallara_specs}
+\end{longtable}
+
+The Dallara 224 F2 2024 was specifically designed with the purpose of offering the perfect training ground for prospective Formula 1 drivers. Under its official specifications, the basis of philosophy for the car revolves around incorporating enhanced performance, upgraded safety protocols, as well as true driving dynamics while sustaining cost-friendliness for teams as well as organizers. This car is directly aligned with the technological progress of Formula 1, especially as it pertains to aerodynamics, powertrains, as well as mechanical parts.\\
+
+
+Some of its typical features include:
+\begin{itemize}
+    \item \textbf{Aerodynamics:} Redesigned nose, front and rear wings, and floor geometry aimed at promoting close wheel to wheel racing and enhancing overtaking opportunities.
+    \item \textbf{Engine:} Powered by a 3.4 liter turbocharged Mecachrome engine.
+    \item \textbf{Safety Compliance:} Adopting the latest FIA 2024 standards for impact protection, braking, steering ergonomics, and cockpit layout to respond to a wider range of physiologies of drivers.
+\end{itemize}
+Therefore, the Dallara 224 F2 2024 model provides a remarkably real environment for testing grip forecasting algorithms, combining genuine mechanical dynamics with demanding driving conditions.
+
+\subsection{Selected Circuits}
+In the earliest phase of data gathering, involving measurement of grip dynamics, cornering efficiency, and stability of the vehicle, there was a need to search for test tracks that would replicate the predicted conditions for future motor car racing events.\\
+
+For this purpose, three particular circuits were selected to form the dataset: Abu Dhabi's Yas Marina Circuit, Autodromo Enzo e Dino Ferrari (the Imola Circuit), and Mugello Circuit. The unique characteristics unique to each of these circuits allow for an extensive analysis of how the car performs in different race conditions. The choice of the Yas Marina Circuit is due to its extensive involvement in events focused on autonomous racing. The facility provides a suitable environment for simulating high-speed traction scenarios and vehicle control challenges in a modern, Formula 1-level setup.
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.21]{img/yasmarina.jpeg}
+\caption{The Yas Marina Circuit.}
+\label{figura:yasmarina}
+\end{figure}
+
+The Yas Marina Circuit is not present in Assetto Corsa in its stock configuration. A community modification has therefore been integrated into the simulator. The specific modification used is the \textbf{Abu Dhabi 2021 CHQ v0.9} modification \cite{yasmarinachq2021}, which provides a real-world representation of the Yas Marina configuration in the year 2021, as shown in figure \ref{figura:yasmarina}. The modification improves artificial intelligence performance and integrates complex modeling of tracks, thus providing a more realistic simulation.\\
+
+The process of installation was simple: following the download phase, it was necessary to properly unpack the files and, if necessary, replace previously installed game files. While a number of operations were carried out manually, such as backing up existing AI files and updating track metadata, the overall process made it possible to smoothly integrate the track into the sim environment.
+\\
+
+Along with Yas Marina, two circuits in Italy were selected: The Imola Circuit, whose official title is Autodromo Enzo e Dino Ferrari, was chosen because it has a combination of fast-paced sectors and complex bends, making it apt to test vehicular stability in periods of rapid acceleration and deceleration. The elevation changes and marked curbs also help evaluate how a vehicle handles when put to stress. The Mugello Circuit has a smooth and uniform layout to the track that is especially well-suited to test cornering stability and grip through a wide range of turn radii. The high- and medium-turn corners of the circuit put stress on the lateral dynamics and path-optimizing capabilities of the car.
+
+\section{Dataset Creation}
+Given the lack of publicly released data related to grip forecasting for racing applications, and the unavailability of datasets such as the one provided by the TII, the first goal of the experimental research was to build a tailored dataset according to the purposes of this research.
+
+\subsection{Data Acquisition from the Simulator}
+First, a thorough survey was performed to identify the method for retrieving in-game telemetry data from the Assetto Corsa simulation platform. It became apparent fairly quickly that Assetto Corsa does not have a publicly exposed API that can provide real-time telemetry data externally as a structured output.\\
+
+Therefore, a different approach had to be applied. The solution was found within the context of interpreting the shared memory accessed by the simulator. Namely, Assetto Corsa refreshes specific memory blocks at set intervals, and they hold a structured block of data which defines the current state of the vehicle as well as the simulation environment. This data is provided for reading but not for writing, allowing external software to receive data passively without affecting the normal running of either the simulator itself, or the simulation procedure. It is important to note that due to the read only nature of access through this path, direct modification or interference with the behavior of the simulator through this interface is impossible, except indirectly through mechanisms such as the use of physical controller inputs, or virtual joystick drivers.\\
+
+For increased accessibility of the shared memory, the \textbf{PyAccSharedMemory} Python module was utilized \cite{pyaccsharedmemory2025}. This module provides a higher level and more Pythonic interface to Assetto Corsa's basic shared memory objects, hence making physics and graphics data easier to obtain. 
+
+The database used for grip prediction was developed by selecting the features deemed most relevant for the understanding of the vehicle's dynamic state and the environmental conditions faced in track driving. Specifically, the following variables were determined:
+
+\begin{itemize}
+    \item \textbf{gas}: The throttle pedal's input signal ranges from 0.0 to 1.0.
+    \item \textbf{brake}: The brake pedal input ranges from 0.0 up to 1.0.
+    \item \textbf{rpm}: Engine revolutions per minute, providing an indicator of engine workload and speed.
+    \item \textbf{steer}: Current steering input angle by the driver.
+    \item \textbf{speed}: Current vehicle speed expressed in kilometers per hour.
+    \item \textbf{g\_force}: A three-dimensional vector representing the forces acting on the vehicle on the X, Y, and Z axes.
+    \item \textbf{wheel\_slip}: Slip values for each individual tire, critical for detecting loss of traction.
+    \item \textbf{pressure}: Tire pressure measurements for each wheel.
+    \item \textbf{tyre\_temp}: Core rubber temperature for each tire, essential for understanding grip variation due to thermal effects.
+    \item \textbf{air\_temp}: The surrounding temperature near the circuit.
+    \item \textbf{road\_temp}: Track surface temperature, a major influencer of tire behavior.
+    \item \textbf{yaw\_rate}: Vehicle’s rotational speed around its vertical axis, crucial for stability assessment.
+    \item \textbf{slip\_angle}: The angle between the true path of motion and the direction of the wheel.
+    \item \textbf{slip\_ratio}: Tire slip along the longitudinal direction.
+    \item \textbf{brake\_pressure}: Its brake system uses hydraulic pressure.
+    \item \textbf{brake\_temp}: Temperature readings of the brake discs on each wheel.
+    \item \textbf{current\_time\_str}: The current lap lenght.
+    \item \textbf{normalized\_car\_position}: A normalized scalar value between 0.0 and 1.0 expressing the progression of the vehicle on the track.
+    \item \textbf{wind\_speed}: The velocity of wind at the track, measured in meters per second.
+    \item \textbf{wind\_direction}: Wind direction relative to a fixed north based reference.
+    \item \textbf{tc\_level}: The level at which the vehicle's electronic systems activate traction control.
+    \item \textbf{tc\_cut\_level}: The level of traction reduction, specifying the degree to which engine power is restricted under conditions of lost traction.
+    \item \textbf{abs\_level}: Level of Anti lock Braking System intervention to prevent wheel lockup under heavy braking.
+
+\end{itemize}
+
+This selected suite of features indicates the way the car handles on the inside and under various outside conditions. It assists in generating improved models for grip changes.
+
+\subsection{Issues Encountered and Solutions Implemented}
+I intended to use the traction control system sensor data at the beginning of the experiment to make an estimate of grip loss. However, after collecting initial data, I discovered big issues. One of the key issues was the fact that not all of the data fields updated immediately. Specifically, the traction control system variables remained constant even when the system was definitely engaged while driving the car. It was extremely difficult to use those fields reliably for grip forecasting as a result.\\
+
+Another technical issue was discovered about the car's coordinate system. The (X, Y, Z) axes of the car were apparently rotated from where they ought to be. The misalignment required careful attention when examining side and front G forces of the simulator, figure \ref{figura:gf}.
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=1]{img/gforce.jpg}
+\caption{Correct orientation of G Force axes based on standard automotive conventions \cite{emtronaustralia2025}.}
+\label{figura:gf}
+\end{figure}
+
+Also missing or not updated was all brake data such as brake temperatures and brake pressure. All the columns of unclear or constant sensor values were thus removed from the dataset. For the sake of quality and consistency of the remaining data, corrections were done while gathering the data. For instance, G force vector values were aligned to adopt standard car reference axes such that they could easily be interpreted.\\
+
+Another anticipated issue with the work was a lack of live tire wear data. The simulator indicates worn out tires, but the telemetry fails to provide this. The tire wear will have to be estimated by guessing how much time went by and how grip drops as the session progresses. The general concept is that tires grip less as they get worn when going sideways and forward, something the machine model will learn.
+
+\subsection{Record Classification}
+Before each record is archived, it goes through a classification process meant to attach a designation to it in reflection of the present state of the vehicle. This process allows for semantic annotations to be integrated into data sets, clarifying what happens to a vehicle in real time, thus ensuring large benefits in supervised learning and future analyses.\\
+
+Considering that this simulator provides us with detailed physical parameters not found in real-world automobiles, e.g., exact slip values for every tire, we use this beneficial information in the data collection process to obtain ground truth labels. These will then be ignored when making real-world inferences, ensuring our predictions are based solely on the input data we have. Along with wheel slip, lateral G-force is an important measure of the conditions under which a vehicle is cornering; this is an important element for understanding grip-related dynamics in car performance.\\
+
+The classification algorithm will assign one of four possible states to each telemetry record:
+\begin{itemize}
+    \item \textbf{grip\_loss}: indicates that one or more wheels are slipping excessively during cornering.
+    \item \textbf{high\_grip\_accelerate}: identifies high grip situations with strong lateral acceleration, implying optimal cornering performance.
+    \item \textbf{low\_grip\_accelerate}: intermediate condition where some slip is present, but not severe enough to cause full loss of traction.
+    \item \textbf{neutral}: default state when no specific condition is met.
+\end{itemize}
+
+\noindent The process of classification involves the following logic expressed in pseudocode:
+
+\begin{verbatim}
+function classify_state(speed_kph, g_force, wheel_slip):
+    SLIP_LIMIT = 1.15          // above: excessive slip
+    SLIP_HIGH_GRIP = 0.6       // below: optimal grip
+
+    g_lateral = abs(g_force_x) // extract lateral G-force
+    front_slip = average(wheel_slip_front_left, 
+                         wheel_slip_front_right)
+    rear_slip = average(wheel_slip_rear_left,
+                        wheel_slip_rear_right)
+
+    speed_ms = convert_kph_to_ms(speed_kph)
+    dynamic_g_threshold = clamp((speed_ms^2) 
+                            / (100 * 9.81), 0.1, 1.2)
+
+    if (front_slip or rear_slip > SLIP_LIMIT) and 
+                    g_lateral > dynamic_g_threshold:
+        return "grip_loss"
+    else if (front_slip and rear_slip < SLIP_HIGH_GRIP)
+                    and g_lateral > dynamic_g_threshold:
+        return "high_grip_accelerate"
+    else if (slip in intermediate range) and
+                    g_lateral > dynamic_g_threshold:
+        return "low_grip_accelerate"
+    else:
+        return "neutral"
+\end{verbatim}
+
+The methodology in this work involves a velocity-dependent variable lateral G-force threshold based on a physical derivation of peak traction in a turn (in this case, the relation $g = v^2 / r$) \cite{halliday2013fundamentals}. This allows for classifier adaptation to different driving behaviours at all velocities. By relating each data point to a category when it is collected, we enable future analysis and model training in a useful format with the help of important behavioral annotations without resorting to complex real-time inference models or post-collection heuristics.
+
+\newpage
+\subsection{Description of Saved Datasets}
+Following removal of non-updating fields and the application of necessary adjustments, detailed telemetry data were organized in a systematic manner into structured .csv format. Each data set corresponds to a unique driving test on a single circuit and involves continuous telemetry readings accumulated over a number of laps. The data recoding methodology entailed sampling simulator memory in 100 millisecond intervals, which is a rate of 10 samples per second. That resolution was sufficient to record representative changes in driving behaviour and car performance.\\
+
+In a bid to have a dataset with diversity and statistical accuracy, a strategic decision was made to recruit a relatively large group of drivers with a good degree of driving simulation skills and familiarity with high-performance driving. A total of 10 drivers were recruited and each went through a series of driving tests performed in carefully controlled simulation conditions.\\
+
+Three different tracks: Yas Marina (Abu Dhabi), Imola, and Mugello, were tested for each driver in three different temperature conditions to simulate different environmental conditions. A driving test of each configuration was carried out for 5 minutes to collect almost 3000 data points per test. Additionally, each configuration was tested three times on each track to evaluate data accuracy and test repeatability.\\
+
+The table below summarizes the dataset creation strategy \ref{tab:dataset_config}:
+
+\newpage
+\begin{longtable}{|c|c|c|}
+\hline
+\textbf{Circuit} & \textbf{Weather Conditions} & \textbf{Session Duration} \\
+\hline
+Abu Dhabi & Sunny, 36°C & 5 minutes \\
+Abu Dhabi & Sunny, 18°C & 5 minutes \\
+Abu Dhabi & Sunny, 0°C  & 5 minutes \\
+\hline
+Imola & Sunny, 36°C & 5 minutes \\
+Imola & Sunny, 18°C & 5 minutes \\
+Imola & Sunny, 0°C  & 5 minutes \\
+\hline
+Mugello & Sunny, 36°C & 5 minutes \\
+Mugello & Sunny, 18°C & 5 minutes \\
+Mugello & Sunny, 0°C  & 5 minutes \\
+\hline
+\caption{Configuration of each dataset creation session.}
+\label{tab:dataset_config}
+\end{longtable}
+
+Every participant has executed every combination of circuit and temperature  using the same car model to maintain consistency in vehicle dynamics. This approach allowed for a controlled comparison between different driving styles and environmental conditions, laying the foundation for further analysis related to autonomous vehicle behaviour, driver profiling, or machine learning model training.
+
+\section{Data Analysis}
+
+\subsection{Single Person Dataset}
+
+\subsection{Multi person Dataset}
+
+\section{Grip Prediction with Machine Learning}
+Dire che dal dataset sono stati tolti i dati dello slip delle ruote, e l'etichetta che va predetta.
+
+\subsection{Dataset Fix}
+
+\subsection{Simple CNN network}
+
+\subsection{Transformer}
+
+\subsection{LSTM}
+
+\subsection{Tabular Resnet 1D}
+
+\section{User Interface}
+
+\subsection{Requirements}
+
+\subsubsection{Functional requirements}
+
+\subsubsection{Non-functional requirements}
+
+\subsection{Design}
+
+\subsubsection{Personas and scenarios}
+
+\subsubsection{Interface design}
+
+\subsection{User Interaction}
+Parlare di un interazione non solo visiva ma anche al volante ad esempio, o con l'utilizzo di suoni. Possibile implementazione con suoni.
+
+\chapter{Future developments}
+
+\chapter{Conclusion}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%\begin{figure}[hbtp]
+%\centering
+%\includegraphics[scale=0.6]{img/casi.png}
+%\caption{Schema dei casi d'uso per la piattaforma.}
+%\label{figura:casiDuso}
+%\end{figure}
+
+
+\bibliographystyle{IEEEtran}
+\bibliography{export}
+
+
+\end{document} 
