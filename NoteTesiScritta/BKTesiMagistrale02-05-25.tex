@@ -1057,13 +1057,34 @@ The methodology in this work involves a velocity-dependent variable lateral G-fo
 \subsection{Description of Saved Datasets}
 Following removal of non-updating fields and the application of necessary adjustments, detailed telemetry data were organized in a systematic manner into structured .csv format. Each data set corresponds to a unique driving test on a single circuit and involves continuous telemetry readings accumulated over a number of laps. The data recoding methodology entailed sampling simulator memory in 100 millisecond intervals, which is a rate of 10 samples per second. That resolution was sufficient to record representative changes in driving behaviour and car performance.\\
 
-In a bid to have a dataset with diversity and statistical accuracy, a strategic decision was made to recruit a relatively large group of drivers with a good degree of driving simulation skills and familiarity with high-performance driving. A total of 10 drivers were recruited and each went through a series of driving tests performed in carefully controlled simulation conditions.\\
+In a bid to have a dataset with diversity and statistical accuracy, a strategic decision was made to recruit a relatively large group of drivers with a good and varied degree of driving simulation skills and familiarity with high-performance driving. A total of 10 drivers were recruited and each went through a series of driving tests performed in carefully controlled simulation conditions.\\
+
+The following table \ref{tab:driver_experience} shows the experience levels of the group of drivers:
+
+\begin{longtable}{|l|c|}
+\hline
+\textbf{Name} & \textbf{Experience Level} \\
+\hline
+Mattina C. & 10/10 \\
+Andrea B. & 8/10 \\
+Fabio N. & 9/10 \\
+Nicholas P. & 8/10 \\
+Sara I. & 7/10 \\
+Manuel A. & 9/10 \\
+Giacomo B. & 8/10 \\
+Mattina R. & 10/10 \\
+Andrea S. & 8/10 \\
+Marco A. & 9/10 \\
+\hline
+\caption{Experience levels of the group of drivers.}
+\label{tab:driver_experience}
+\end{longtable}
+
 
 Three different tracks: Yas Marina (Abu Dhabi), Imola, and Mugello, were tested for each driver in three different temperature conditions to simulate different environmental conditions. A driving test of each configuration was carried out for 5 minutes to collect almost 3000 data points per test. Additionally, each configuration was tested three times on each track to evaluate data accuracy and test repeatability.\\
 
 The table below summarizes the dataset creation strategy \ref{tab:dataset_config}:
 
-\newpage
 \begin{longtable}{|c|c|c|}
 \hline
 \textbf{Circuit} & \textbf{Weather Conditions} & \textbf{Session Duration} \\
@@ -1087,10 +1108,268 @@ Mugello & Sunny, 0°C  & 5 minutes \\
 Every participant has executed every combination of circuit and temperature  using the same car model to maintain consistency in vehicle dynamics. This approach allowed for a controlled comparison between different driving styles and environmental conditions, laying the foundation for further analysis related to autonomous vehicle behaviour, driver profiling, or machine learning model training.
 
 \section{Data Analysis}
+This chapter provides a comprehensive analysis of data collected during the driving trials. The analysis has been presented in two major sections:
 
-\subsection{Single Person Dataset}
+\begin{enumerate}
+    \item \textbf{Session Level Analysis}: There is an evaluation of data integrity applied to each separate session, defined by one user navigating one specific path under specific temperature conditions. This includes checking for potential data corruption, detection of significant outliers, and monitoring trends of key telemetry measures during the course of the 5-minute session.
+    \item \textbf{Aggregated Analysis}: This phase involves categorizing and analyzing data in accordance with temperature, road conditions, and driving performance parameters. It includes an integrated analysis of trends and patterns related to driving behaviour, grip characteristics, and impacts that operating conditions have on performance.
+\end{enumerate}
+--------------------------------------------------------------------------
 
-\subsection{Multi person Dataset}
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Session Level Analysis}
+This section presents the first level of analysis: the inspection of a single driving session to ensure data quality and understand the evolution of telemetry variables over time. The aim is to verify that the acquisition process was successful (i.e., no corruption or extreme outliers) and to examine how data such as grip metrics evolve during the 5-minute session.\\
+
+\subsubsection{Data Structure Overview}
+The following table \ref{tab:dataset_structure} shows the structure of the dataset, including the names of the columns, their data types, and whether they contain any missing values.
+
+\begin{longtable}{|c|c|c|c|}
+\hline
+\textbf{\#} & \textbf{Column Name} & \textbf{Non Null Count} & \textbf{Data Type} \\
+\hline
+0 & gas & 3000 & float64 \\
+1 & brake & 3000 & float64 \\
+2 & rpm & 3000 & int64 \\
+3 & steer & 3000 & float64 \\
+4 & speed & 3000 & float64 \\
+5 & g\_force\_x & 3000 & float64 \\
+6 & g\_force\_y & 3000 & float64 \\
+7 & g\_force\_z & 3000 & float64 \\
+8 & wheel\_slip\_front\_left & 3000 & float64 \\
+9 & wheel\_slip\_front\_right & 3000 & float64 \\
+10 & wheel\_slip\_rear\_left & 3000 & float64 \\
+11 & wheel\_slip\_rear\_right & 3000 & float64 \\
+12 & pressure\_front\_left & 3000 & float64 \\
+13 & pressure\_front\_right & 3000 & float64 \\
+14 & pressure\_rear\_left & 3000 & float64 \\
+15 & pressure\_rear\_right & 3000 & float64 \\
+16 & tyre\_temp\_front\_left & 3000 & float64 \\
+17 & tyre\_temp\_front\_right & 3000 & float64 \\
+18 & tyre\_temp\_rear\_left & 3000 & float64 \\
+19 & tyre\_temp\_rear\_right & 3000 & float64 \\
+20 & air\_temp & 3000 & float64 \\
+21 & road\_temp & 3000 & float64 \\
+22 & yaw\_rate & 3000 & float64 \\
+23 & current\_time\_str & 3000 & object \\
+24 & normalized\_car\_position & 3000 & float64 \\
+25 & wind\_speed & 3000 & float64 \\
+26 & wind\_direction & 3000 & float64 \\
+27 & result & 3000 & object \\
+\hline
+\caption{Dataset column summary: structure, types, and completeness.}
+\label{tab:dataset_structure}
+\end{longtable}
+
+Each column corresponds to a telemetry signal collected at each time step. 
+
+\subsubsection{Descriptive Statistics}
+The following table \ref{tab:stat_tab} summarizes key statistics (mean, min, max, quartiles, standard deviation) for the numerical features. These values help to understand the distribution and range of the data across the session.
+
+\begin{longtable}{|l|r|r|r|r|r|r|}
+\hline
+\textbf{Feature} & \textbf{Count} & \textbf{Mean} & \textbf{Std} & \textbf{Min} & \textbf{25\%} & \textbf{Median} \\
+\hline
+gas & 3000 & 0.66 & 0.38 & 0.00 & 0.37 & 0.82 \\
+brake & 3000 & 0.06 & 0.17 & 0.00 & 0.00 & 0.00 \\
+rpm & 3000 & 7063 & 1016 & 2350 & 6580 & 7230 \\
+... & ... & ... & ... & ... & ... & ... \\
+wind\_speed & 3000 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
+\hline
+\caption{Descriptive partial statistics for the session telemetry data.}
+\label{tab:stat_tab}
+\end{longtable}
+
+These values show that:
+\begin{itemize}
+    \item Gas is typically applied most of the time (mean 0.66).
+    \item Braking is sparse (mean 0.06), suggesting mostly acceleration or coasting.
+    \item Wind data is inactive or constant in this session.
+    \item RPM and speed suggest the car is generally driven at high load.
+\end{itemize}
+
+\subsubsection{Label Distribution}
+The following table \ref{tab:lab_distr} shows the frequency of each grip classification label in the session:
+
+\begin{longtable}{|l|r|}
+\hline
+\textbf{Grip Category (result)} & \textbf{Count} \\
+\hline
+neutral & 1729 \\
+high\_grip\_accelerate & 804 \\
+low\_grip\_accelerate & 381 \\
+grip\_loss & 86 \\
+\hline
+\caption{Distribution of grip labels in the session.}
+\label{tab:lab_distr}
+\end{longtable}
+
+This distribution indicates that:
+\begin{itemize}
+    \item Most data points are classified as neutral, followed by high\_grip\_accelerate.
+    \item Only a small portion corresponds to grip\_loss, likely due to the driver's experience, which minimizes traction loss events.
+\end{itemize}
+However, this class imbalance could negatively affect machine learning models. Algorithms might struggle to learn meaningful patterns for underrepresented classes like grip\_loss unless proper balancing techniques are applied.
+
+\subsubsection{Distribution of Key Physical Variables}
+Figure \ref{fig:physical_variables_distribution} shows the distribution of key physical variables collected during a driving session. The histograms provide insights into the behaviour of variables such as throttle application (\textit{gas}), braking intensity (\textit{brake}), vehicle speed (\textit{speed}), yaw rate (\textit{yaw\_rate}), and the forces acting on the vehicle (\textit{g\_force\_x}, \textit{g\_force\_y}, \textit{g\_force\_z}).
+
+\begin{itemize}
+    \item \textbf{Gas}: The histogram indicates that the throttle is frequently applied at maximum levels, with a significant number of data points at 1.0, suggesting aggressive acceleration behavior.
+    \item \textbf{Brake}: The braking intensity is mostly concentrated at 0.0, indicating that braking is rarely applied during the session.
+    \item \textbf{Speed}: The speed distribution shows a peak around 200 km/h, reflecting high-speed driving conditions typical of racing scenarios.
+    \item \textbf{Yaw Rate}: The yaw rate is centered around 0, with a narrow spread, indicating stable cornering behavior with minimal oversteer or understeer.
+    \item \textbf{G-Forces}: The distributions of \textit{g\_force\_x}, \textit{g\_force\_y}, and \textit{g\_force\_z} are centered around 0, with \textit{g\_force\_y} showing a wider spread, reflecting lateral forces experienced during cornering.
+\end{itemize}
+
+These distributions provide a comprehensive overview of the driving dynamics and vehicle behavior during the session, highlighting the conditions under which the data was collected.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/Figure_1.png}
+    \caption{Distribution of key physical variables during the driving session.}
+    \label{fig:physical_variables_distribution}
+\end{figure}
+
+\subsubsection{Correlation Matrix of Key Variables}
+Figure \ref{fig:correlation_matrix} presents the correlation matrix of key physical variables collected during the driving session. The matrix highlights the pairwise relationships between variables, with correlation coefficients ranging from -1 (strong negative correlation) to 1 (strong positive correlation). The color scale visually represents the strength and direction of the correlations, where red indicates positive correlations and blue indicates negative correlations.
+
+\begin{itemize}
+    \item \textbf{Gas and Brake}: A strong negative correlation (-0.61) is observed, as expected, since throttle and braking are typically mutually exclusive actions.
+    \item \textbf{Gas and G\_Force\_X}: A strong positive correlation (0.75) indicates that higher throttle application is associated with increased longitudinal forces.
+    \item \textbf{Brake and G\_Force\_X}: A strong negative correlation (-0.91) suggests that braking is closely tied to deceleration forces.
+    \item \textbf{Yaw Rate and G\_Force\_Y}: A strong positive correlation (0.92) reflects the relationship between lateral forces and the vehicle's yawing motion during cornering.
+    \item \textbf{Speed and Normalized Car Position}: A weak negative correlation (-0.23) suggests that speed slightly decreases in certain sections of the track.
+\end{itemize}
+
+This correlation matrix provides valuable insights into the interdependencies between variables, helping to identify key factors influencing vehicle dynamics and driver behaviour.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.2\textwidth]{img/Figure_2.png}
+    \caption{Correlation matrix of key physical variables during the driving session.}
+    \label{fig:correlation_matrix}
+\end{figure}
+
+\subsubsection{Distribution of Front vs Rear Wheel Slip}
+Figure \ref{fig:front_rear_slip_distribution} illustrates the distribution of wheel slip values for the front and rear wheels during the driving session. The histogram provides a comparative analysis of the slip behavior between the front and rear wheels, with overlaid density curves to highlight the trends.
+
+\begin{itemize}
+    \item \textbf{Front Wheel Slip}: The distribution shows a significant concentration of values near 0, indicating that the front wheels generally maintain good traction. This reflects their primary role in steering and stability, with minimal slip under normal conditions.
+    \item \textbf{Rear Wheel Slip}: The rear wheels exhibit a broader distribution compared to the front wheels, with a noticeable peak around 0.25. This is due to the fact that the car is rear-wheel drive, meaning that during acceleration, especially in corners, the rear wheels are more prone to losing grip. This behavior is typical of rear wheel drive vehicles, where power delivery to the rear wheels increases the likelihood of slip.
+    \item \textbf{Comparison and Oversteer}: The higher slip values observed in the rear wheels indicate that the car tends to experience oversteer during cornering. This is a result of the rear wheels losing traction more easily when power is applied, leading to a dynamic where the rear of the car rotates more than the front.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.1\textwidth]{img/Figure_5.png}
+    \caption{Distribution of front vs rear wheel slip values during the driving session.}
+    \label{fig:front_rear_slip_distribution}
+\end{figure}
+
+\subsubsection{Front and Rear Wheel Slip by Grip Classification}
+Figures \ref{fig:front_slip_classification} and \ref{fig:rear_slip_classification} present the distribution of front and rear wheel slip values across different grip classifications. These boxplots provide insights into how wheel slip varies under different driving conditions, categorized as \textit{neutral}, \textit{high grip accelerate}, \textit{low grip accelerate}, and \textit{grip loss}.
+
+\begin{itemize}
+    \item \textbf{Front Wheel Slip (Figure \ref{fig:front_slip_classification})}: 
+    The front wheel slip values are generally lower compared to the rear wheels, reflecting the role of the front wheels in maintaining stability and steering control.\\
+    - In the \textit{neutral} category, the slip values are minimal, indicating stable driving conditions.\\
+    - As the grip classification moves from \textit{high grip accelerate} to \textit{low grip accelerate} and \textit{grip loss}, the front wheel slip increases, showing a loss of traction under more extreme conditions.
+
+    \item \textbf{Rear Wheel Slip (Figure \ref{fig:rear_slip_classification})}: 
+    The rear wheel slip values are significantly higher than the front wheels, particularly in the \textit{low grip accelerate} and \textit{grip loss} categories. This is due to the rear-wheel-drive configuration of the car, where power delivery to the rear wheels increases the likelihood of slip during acceleration.\\
+    - The \textit{grip loss} category shows the highest slip values, indicating a complete loss of traction in the rear wheels, often leading to oversteer.\\
+    - The \textit{neutral} category exhibits the lowest slip values, reflecting stable driving conditions with minimal rear wheel slip.
+
+    \item \textbf{Comparison}: \\
+    - The rear wheels exhibit a broader range of slip values compared to the front wheels, highlighting the dynamic differences in traction behavior between the two axles.\\
+    - The tendency for higher rear wheel slip under acceleration and cornering conditions is a key characteristic of the vehicle's rear wheel drive dynamics.
+\end{itemize}
+
+These analyses emphasize the importance of understanding wheel slip behavior to evaluate vehicle stability and driver control under various grip conditions.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/Figure_6.png}
+    \caption{Front wheel slip distribution by grip classification.}
+    \label{fig:front_slip_classification}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/Figure_7.png}
+    \caption{Rear wheel slip distribution by grip classification.}
+    \label{fig:rear_slip_classification}
+\end{figure}
+
+\subsubsection{Distribution of Tire Pressure and Temperature by Axle}
+Figures \ref{fig:tire_pressure_distribution} and \ref{fig:tire_temperature_distribution} illustrate the distribution of tire pressure and temperature for the front and rear tires during the driving session. These histograms provide insights into the differences between the front and rear axles, highlighting the impact of the car's rear wheel drive configuration on these variables.
+
+\begin{itemize}
+    \item \textbf{Tire Pressure (Figure \ref{fig:tire_pressure_distribution})}:\\
+    - The rear tires exhibit higher pressure values compared to the front tires. This is likely due to the car's rear-wheel-drive configuration, where the rear tires bear the brunt of the acceleration forces, especially during cornering.\\
+    - The increased pressure in the rear tires can also be attributed to the dynamic weight transfer to the rear axle during acceleration, which compresses the tires and increases their pressure.\\
+    - The front tires, on the other hand, maintain relatively lower and more consistent pressure values, reflecting their primary role in steering and stability.
+
+    \item \textbf{Tire Temperature (Figure \ref{fig:tire_temperature_distribution})}:\\
+    - The rear tires also exhibit higher temperatures compared to the front tires. This is directly related to the increased friction and energy dissipation caused by the rear tires' role in delivering power to the road.\\
+    - During cornering, the rear tires experience additional stress due to acceleration, which generates more heat. This is particularly evident in the car's tendency to oversteer, where the rear tires lose grip and slide, further increasing their temperature.\\
+    - The relationship between tire pressure and temperature is evident, as higher temperatures in the rear tires lead to increased pressure due to the expansion of air inside the tires.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/Figure_8.png}
+    \caption{Distribution of front vs rear tire pressure (PSI).}
+    \label{fig:tire_pressure_distribution}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/Figure_9.png}
+    \caption{Distribution of front vs rear tire temperatures (°C).}
+    \label{fig:tire_temperature_distribution}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Aggregated Analysis}
 
 \section{Grip Prediction with Machine Learning}
 Dire che dal dataset sono stati tolti i dati dello slip delle ruote, e l'etichetta che va predetta.
@@ -1123,6 +1402,9 @@ Dire che dal dataset sono stati tolti i dati dello slip delle ruote, e l'etichet
 Parlare di un interazione non solo visiva ma anche al volante ad esempio, o con l'utilizzo di suoni. Possibile implementazione con suoni.
 
 \chapter{Future developments}
+Parlare del fatto di poter usare tipologie di mescola differente per le ruote.
+
+Possibilità di utilizzare un altro simulatore al fine di avere anche condizioni climatiche come neve, pioggia, ghiaccio al fine di rendere il caso più reale possibile.
 
 \chapter{Conclusion}
 
