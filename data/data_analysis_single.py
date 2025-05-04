@@ -26,7 +26,7 @@ def clip_outliers_iqr(df, features, multiplier=4):
     return df_clipped
 
 # Load the telemetry data
-df = pd.read_csv("mattia/vehicle_telemetry_mattia_mugello_18G_S.csv")
+df = pd.read_csv("mattia/vehicle_telemetry_mattia_imola_18G_S.csv")
 
 # Display first few records to verify
 print(df.head())

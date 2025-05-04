@@ -152,7 +152,7 @@ def analyze_data(df):
     plt.show()
 
 def main():
-    df = load_telemetry_data("dataset/vehicle_telemetry_*.csv")
+    df = load_telemetry_data("mattia/vehicle_telemetry_*.csv")
     if df.empty:
         print("Nessun file trovato. Controlla il pattern o la cartella.")
         return
