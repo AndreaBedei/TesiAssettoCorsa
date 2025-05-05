@@ -30,26 +30,11 @@ def load_telemetry_data(folder_pattern="*.csv"):
     return pd.concat(rows, ignore_index=True) if rows else pd.DataFrame()
 
 def analyze_data(df):
-    # Mean slip for driver and temperature
-    slip_by_temp_track = df.groupby(['track', 'temp'])[['wheel_slip_front_left', 'wheel_slip_front_right',
-                                                        'wheel_slip_rear_left', 'wheel_slip_rear_right']].mean()
-    slip_by_temp_track = slip_by_temp_track.mean(axis=1).reset_index(name='mean_slip_0')
-    slip_by_temp_track["mean_slip_0"] = np.where(slip_by_temp_track["mean_slip_0"] > 3, 3, slip_by_temp_track["mean_slip_0"])
-
-
-    plt.figure(figsize=(10, 6))
-    sns.barplot(data=slip_by_temp_track, x='track', y='mean_slip_0', hue='temp', palette="viridis")
-    plt.title("Average Slip by Circuit and Temperature (All Drivers)")
-    plt.xlabel("Circuit")
-    plt.ylabel("Average Slip")
-    plt.legend(title="Temperature")
-    plt.show()
-
     # Mean grip for driver and temperature
     slip_by_temp = df.groupby(['temp'])[['wheel_slip_front_left', 'wheel_slip_front_right',
                                         'wheel_slip_rear_left', 'wheel_slip_rear_right']].mean()
     slip_by_temp = slip_by_temp.mean(axis=1).reset_index(name='mean_slip')
-    slip_by_temp["mean_slip"] = np.where(slip_by_temp["mean_slip"] > 3, 3, slip_by_temp["mean_slip"])
+    slip_by_temp["mean_slip"] = np.where(slip_by_temp["mean_slip"] > 2, 2, slip_by_temp["mean_slip"])
 
 
     plt.figure(figsize=(10, 6))
@@ -69,7 +54,7 @@ def analyze_data(df):
     grouped_slip = df.groupby(['track', 'temp', 'driver'])[['wheel_slip_front_left', 'wheel_slip_front_right',
                                                             'wheel_slip_rear_left', 'wheel_slip_rear_right']].mean()
     grouped_slip = grouped_slip.mean(axis=1).reset_index(name='mean_slip')
-    grouped_slip["mean_slip"] = np.where(grouped_slip["mean_slip"] > 3, 3, grouped_slip["mean_slip"])
+    grouped_slip["mean_slip"] = np.where(grouped_slip["mean_slip"] > 2, 2, grouped_slip["mean_slip"])
     plt.figure(figsize=(10, 6))
     sns.barplot(data=grouped_slip, x='track', y='mean_slip', hue='temp')
     plt.title("Average Slip by Track and Temperature")
@@ -87,7 +72,7 @@ def analyze_data(df):
     grip_behavior = df.groupby(['track', 'driver'])[['wheel_slip_front_left', 'wheel_slip_front_right',
                                                      'wheel_slip_rear_left', 'wheel_slip_rear_right']].mean()
     grip_behavior = grip_behavior.mean(axis=1).reset_index(name='mean_grip')
-    grip_behavior["mean_grip"] = np.where(grip_behavior["mean_grip"] > 3, 3, grip_behavior["mean_grip"])
+    grip_behavior["mean_grip"] = np.where(grip_behavior["mean_grip"] > 2, 2, grip_behavior["mean_grip"])
     plt.figure(figsize=(10, 6))
     sns.barplot(data=grip_behavior, x='track', y='mean_grip', hue='driver')
     plt.title("Average grip behavior by track and driver")
@@ -122,7 +107,7 @@ def analyze_data(df):
     # Limiting the maximum value of slip to 3 for better visualization
     plt.figure(figsize=(12, 6))
     df["mean_slip_1"] = df[['wheel_slip_front_left', 'wheel_slip_front_right', 'wheel_slip_rear_left', 'wheel_slip_rear_right']].mean(axis=1)
-    df["mean_slip_1"] = np.where(df["mean_slip_1"] > 3, 3, df["mean_slip_1"])
+    df["mean_slip_1"] = np.where(df["mean_slip_1"] > 2, 2, df["mean_slip_1"])
     sns.boxplot(data=df, x='temp', y='mean_slip_1', hue='driver')
     plt.title("Distribution of average slip by temperature and driver")
     plt.xlabel("Temperature")
@@ -130,32 +115,8 @@ def analyze_data(df):
     plt.legend(title="Driver")
     plt.show()
 
-    # Campionamento casuale del 10% per ogni combinazione di driver, track e temp
-    sampled_df = df.groupby(['driver', 'track', 'temp'], group_keys=False).apply(lambda x: x.sample(frac=0.1, random_state=42))
 
-    # Seleziona solo le colonne numeriche
-    numeric_cols = ['speed', 'g_force_x', 'g_force_y', 'g_force_z', 
-                    'wheel_slip_front_left', 'wheel_slip_front_right', 
-                    'wheel_slip_rear_left', 'wheel_slip_rear_right', 
-                    'yaw_rate']
-
-    # Data Normalization
-    scaler = StandardScaler()
-    normalized_data = scaler.fit_transform(sampled_df[numeric_cols])
     
-    # PCA Reduction
-    pca = PCA(n_components=2)
-    pca_result = pca.fit_transform(normalized_data)
-    sampled_df['PCA_X'] = pca_result[:, 0]
-    sampled_df['PCA_Y'] = pca_result[:, 1]
-
-    plt.figure(figsize=(10, 6))
-    sns.scatterplot(data=sampled_df, x='PCA_X', y='PCA_Y', hue='driver', style='track', alpha=0.7)
-    plt.title("PCA of telemetry data (reduced to 2 components)")
-    plt.xlabel("PCA X")
-    plt.ylabel("PCA Y")
-    plt.legend(title="Driver")
-    plt.show()
 
 def main():
     df = load_telemetry_data("dataset/vehicle_telemetry_*.csv")
