@@ -12,7 +12,7 @@ import time
 import csv
 
 if __name__ == "__main__":
-    csv_filename = 'vehicle_telemetry_andrea_mugello_36G_S.csv'
+    csv_filename = 'vehicle_telemetry_fabio_mugello_36G_S.csv'
     fields = [
         "gas", "brake", "rpm", "steer", "speed", "g_force_x", "g_force_y", "g_force_z",
         "wheel_slip_front_left", "wheel_slip_front_right", "wheel_slip_rear_left", "wheel_slip_rear_right",

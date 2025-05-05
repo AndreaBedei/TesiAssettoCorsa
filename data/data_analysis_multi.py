@@ -44,15 +44,15 @@ def analyze_data(df):
     plt.show()
 
     # Mean grip for driver and temperature
-    grip_by_temp = df.groupby(['temp'])[['wheel_slip_front_left', 'wheel_slip_front_right',
+    slip_by_temp = df.groupby(['temp'])[['wheel_slip_front_left', 'wheel_slip_front_right',
                                         'wheel_slip_rear_left', 'wheel_slip_rear_right']].mean()
-    grip_by_temp = grip_by_temp.mean(axis=1).reset_index(name='mean_grip')
+    slip_by_temp = slip_by_temp.mean(axis=1).reset_index(name='mean_slip')
 
     plt.figure(figsize=(10, 6))
-    sns.barplot(data=grip_by_temp, x='temp', y='mean_grip', hue='temp', palette="coolwarm", dodge=False, legend=False)
-    plt.title("Average Grip by Temperature (All Circuits and Drivers)")
+    sns.barplot(data=slip_by_temp, x='temp', y='mean_slip', hue='temp', palette="coolwarm", dodge=False, legend=False)
+    plt.title("Average Slip by Temperature (All Circuits and Drivers)")
     plt.xlabel("Temperature")
-    plt.ylabel("Average Grip")
+    plt.ylabel("Average Slip")
     plt.show()
     
     # Result distribution by driver and temperature
@@ -152,7 +152,7 @@ def analyze_data(df):
     plt.show()
 
 def main():
-    df = load_telemetry_data("mattia/vehicle_telemetry_*.csv")
+    df = load_telemetry_data("dataset/vehicle_telemetry_*.csv")
     if df.empty:
         print("Nessun file trovato. Controlla il pattern o la cartella.")
         return
