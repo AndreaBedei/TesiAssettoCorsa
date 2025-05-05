@@ -34,6 +34,8 @@ def analyze_data(df):
     slip_by_temp_track = df.groupby(['track', 'temp'])[['wheel_slip_front_left', 'wheel_slip_front_right',
                                                         'wheel_slip_rear_left', 'wheel_slip_rear_right']].mean()
     slip_by_temp_track = slip_by_temp_track.mean(axis=1).reset_index(name='mean_slip_0')
+    slip_by_temp_track["mean_slip_0"] = np.where(slip_by_temp_track["mean_slip_0"] > 3, 3, slip_by_temp_track["mean_slip_0"])
+
 
     plt.figure(figsize=(10, 6))
     sns.barplot(data=slip_by_temp_track, x='track', y='mean_slip_0', hue='temp', palette="viridis")
@@ -47,6 +49,8 @@ def analyze_data(df):
     slip_by_temp = df.groupby(['temp'])[['wheel_slip_front_left', 'wheel_slip_front_right',
                                         'wheel_slip_rear_left', 'wheel_slip_rear_right']].mean()
     slip_by_temp = slip_by_temp.mean(axis=1).reset_index(name='mean_slip')
+    slip_by_temp["mean_slip"] = np.where(slip_by_temp["mean_slip"] > 3, 3, slip_by_temp["mean_slip"])
+
 
     plt.figure(figsize=(10, 6))
     sns.barplot(data=slip_by_temp, x='temp', y='mean_slip', hue='temp', palette="coolwarm", dodge=False, legend=False)
@@ -65,6 +69,7 @@ def analyze_data(df):
     grouped_slip = df.groupby(['track', 'temp', 'driver'])[['wheel_slip_front_left', 'wheel_slip_front_right',
                                                             'wheel_slip_rear_left', 'wheel_slip_rear_right']].mean()
     grouped_slip = grouped_slip.mean(axis=1).reset_index(name='mean_slip')
+    grouped_slip["mean_slip"] = np.where(grouped_slip["mean_slip"] > 3, 3, grouped_slip["mean_slip"])
     plt.figure(figsize=(10, 6))
     sns.barplot(data=grouped_slip, x='track', y='mean_slip', hue='temp')
     plt.title("Average Slip by Track and Temperature")
@@ -82,6 +87,7 @@ def analyze_data(df):
     grip_behavior = df.groupby(['track', 'driver'])[['wheel_slip_front_left', 'wheel_slip_front_right',
                                                      'wheel_slip_rear_left', 'wheel_slip_rear_right']].mean()
     grip_behavior = grip_behavior.mean(axis=1).reset_index(name='mean_grip')
+    grip_behavior["mean_grip"] = np.where(grip_behavior["mean_grip"] > 3, 3, grip_behavior["mean_grip"])
     plt.figure(figsize=(10, 6))
     sns.barplot(data=grip_behavior, x='track', y='mean_grip', hue='driver')
     plt.title("Average grip behavior by track and driver")

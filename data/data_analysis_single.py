@@ -26,7 +26,7 @@ def clip_outliers_iqr(df, features, multiplier=4):
     return df_clipped
 
 # Load the telemetry data
-df = pd.read_csv("mattia/vehicle_telemetry_mattia_abu_18G_S.csv")
+df = pd.read_csv("vehicle_telemetry_andrea_abu_36G_S_1_ora.csv")
 
 # Display first few records to verify
 print(df.head())
@@ -210,8 +210,11 @@ df["slip_mean"] = (
 # Creazione di una colonna temporale sequenziale
 df["time_index"] = range(len(df))
 
+# Modifica dello slip medio per simulare una curva in salita
+# df["slip_mean"] = df["slip_mean"] + (df["time_index"] * 0.000001)
+
 # Calcolo della media dello slip ogni 100 dati
-window_size = 500
+window_size = 4000
 df["slip_mean_rolling"] = df["slip_mean"].rolling(window=window_size).mean()
 
 # Tracciamento del grafico dello slip medio
