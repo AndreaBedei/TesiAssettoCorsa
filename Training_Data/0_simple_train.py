@@ -5,9 +5,9 @@ from preprocess_dataset import fix_dataset, load_telemetry_data
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras.utils import to_categorical
-from keras.callbacks import EarlyStopping
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.utils.class_weight import compute_class_weight
+from custom_early_stop import CustomEarlyStopping
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -70,14 +70,6 @@ else:
     X_val, y_val = X[train_size:train_size+val_size], y[train_size:train_size+val_size]
     X_test, y_test = X[train_size+val_size:], y[train_size+val_size:]
 
-
-early_stopping = EarlyStopping(
-    monitor='val_loss',
-    patience=7,
-    restore_best_weights=True,
-    verbose=1
-)
-
 model = Sequential([
     Dense(256, activation='relu', input_shape=(X_train.shape[1],)),
     Dropout(0.3),
@@ -103,12 +95,14 @@ class_weights = compute_class_weight(
 )
 class_weights_dict = dict(enumerate(class_weights))
 
-model.fit(
+custom_early_stopping = CustomEarlyStopping(validation_data=(X_val, y_val), patience=7)
+
+history = model.fit(
     X_train, y_train,
     validation_data=(X_val, y_val),
     epochs=50,
     batch_size=64,
-    callbacks=[early_stopping],
+    callbacks=[custom_early_stopping],
     class_weight=class_weights_dict,
     verbose=1
 )
