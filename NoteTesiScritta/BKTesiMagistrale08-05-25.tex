@@ -74,9 +74,9 @@
   {\large{\bf Relatore:\\
   Silvia Mirri
   \\}}
-%  {\large{\bf Correlatore:\\
-%  Roberto Girau
-%  }}
+  {\large{\bf Correlatore:\\
+  Roberto Girau
+  }}
   \end{minipage}
   \hfill
   \begin{minipage}[t]{0.47\textwidth}\raggedleft
@@ -122,8 +122,8 @@
     \tab[10pt] I thank all my friends, who have been there for me, supported me and put up with me at every stage of our lives. Special thanks go to Fabio, without whom I probably would not have enrolled in college. I also thank Lorenzo and Giulia, who have always been by my side. Special thanks also go to Matteo, who has always supported me at times when I really needed it. Finally, I thank Giuseppe, Mattia, Nicholas and Sara, whose advice made my life easier. 
 
 \tableofcontents
-%\listoffigures
-%\listoftables
+\listoffigures
+\listoftables
 %\lstlistoflistings
 \setlength{\parindent}{0pt}
 
@@ -1066,14 +1066,14 @@ The following table \ref{tab:driver_experience} shows the experience levels of t
 \textbf{Name} & \textbf{Experience Level} \\
 \hline
 Mattina C. & 10/10 \\
-Andrea B. & 8/10 \\
-Fabio N. & 9/10 \\
+Andrea B. & 9/10 \\
+Fabio N. & 8/10 \\
 Nicholas P. & 8/10 \\
 Sara I. & 7/10 \\
 Manuel A. & 9/10 \\
 Giacomo B. & 8/10 \\
 Mattina R. & 10/10 \\
-Andrea S. & 8/10 \\
+Andrea S. & 9/10 \\
 Marco A. & 9/10 \\
 \hline
 \caption{Experience levels of the group of drivers.}
@@ -1081,7 +1081,7 @@ Marco A. & 9/10 \\
 \end{longtable}
 
 
-Three different tracks: Yas Marina (Abu Dhabi), Imola, and Mugello, were tested for each driver in three different temperature conditions to simulate different environmental conditions. A driving test of each configuration was carried out for 5 minutes to collect almost 3000 data points per test. Additionally, each configuration was tested three times on each track to evaluate data accuracy and test repeatability.\\
+Three different tracks: Yas Marina (Abu Dhabi), Imola, and Mugello, were tested for each driver in three different temperature conditions to simulate different environmental conditions. A driving test of each configuration was carried out for 10 minutes to collect almost 3000 data points per test. Additionally, each configuration was tested three times on each track to evaluate data accuracy and test repeatability.\\
 
 The table below summarizes the dataset creation strategy \ref{tab:dataset_config}:
 
@@ -1114,25 +1114,14 @@ This chapter provides a comprehensive analysis of data collected during the driv
     \item \textbf{Session Level Analysis}: There is an evaluation of data integrity applied to each separate session, defined by one user navigating one specific path under specific temperature conditions. This includes checking for potential data corruption, detection of significant outliers, and monitoring trends of key telemetry measures during the course of the 5-minute session.
     \item \textbf{Aggregated Analysis}: This phase involves categorizing and analyzing data in accordance with temperature, road conditions, and driving performance parameters. It includes an integrated analysis of trends and patterns related to driving behaviour, grip characteristics, and impacts that operating conditions have on performance.
 \end{enumerate}
---------------------------------------------------------------------------
 
 \newpage
-
-
-
-
-
-
-
-
-
-
 
 \subsection{Session Level Analysis}
 This section presents the first level of analysis: the inspection of a single driving session to ensure data quality and understand the evolution of telemetry variables over time. The aim is to verify that the acquisition process was successful (i.e., no corruption or extreme outliers) and to examine how data such as grip metrics evolve during the 5-minute session.\\
 
 \subsubsection{Data Structure Overview}
-The following table \ref{tab:dataset_structure} shows the structure of the dataset, including the names of the columns, their data types, and whether they contain any missing values.
+The table shown in \ref{tab:dataset_structure} depicts the structure of the dataset, including column names, their respective types, as well as the presence of missing values.
 
 \begin{longtable}{|c|c|c|c|}
 \hline
@@ -1170,7 +1159,6 @@ The following table \ref{tab:dataset_structure} shows the structure of the datas
 \caption{Dataset column summary: structure, types, and completeness.}
 \label{tab:dataset_structure}
 \end{longtable}
-
 Each column corresponds to a telemetry signal collected at each time step. 
 
 \subsubsection{Descriptive Statistics}
@@ -1214,25 +1202,25 @@ grip\_loss & 86 \\
 \label{tab:lab_distr}
 \end{longtable}
 
-This distribution indicates that:
+The distribution indicates that:
 \begin{itemize}
     \item Most data points are classified as neutral, followed by high\_grip\_accelerate.
     \item Only a small portion corresponds to grip\_loss, likely due to the driver's experience, which minimizes traction loss events.
 \end{itemize}
-However, this class imbalance could negatively affect machine learning models. Algorithms might struggle to learn meaningful patterns for underrepresented classes like grip\_loss unless proper balancing techniques are applied.
+However, such imbalance in the representation of classes can negatively affect machine learning models. Unless balancing techniques are used, algorithms can suffer from challenges in learning important patterns in underrepresented classes like grip\_loss.
 
 \subsubsection{Distribution of Key Physical Variables}
-Figure \ref{fig:physical_variables_distribution} shows the distribution of key physical variables collected during a driving session. The histograms provide insights into the behaviour of variables such as throttle application (\textit{gas}), braking intensity (\textit{brake}), vehicle speed (\textit{speed}), yaw rate (\textit{yaw\_rate}), and the forces acting on the vehicle (\textit{g\_force\_x}, \textit{g\_force\_y}, \textit{g\_force\_z}).
+The physical variables recorded in the experiment are presented in Figure \ref{fig:physical_variables_distribution}. The histograms provide extensive information about the dynamics of the throttle input (\textit{gas}), intensity of the brake force (\textit{brake}), speed of the car (\textit{speed}), yaw rate (\textit{yaw\_rate}), as well as the different types of force experienced by the car (\textit{g\_force\_x}, \textit{g\_force\_y}, \textit{g\_force\_z}).
 
 \begin{itemize}
-    \item \textbf{Gas}: The histogram indicates that the throttle is frequently applied at maximum levels, with a significant number of data points at 1.0, suggesting aggressive acceleration behavior.
-    \item \textbf{Brake}: The braking intensity is mostly concentrated at 0.0, indicating that braking is rarely applied during the session.
-    \item \textbf{Speed}: The speed distribution shows a peak around 200 km/h, reflecting high-speed driving conditions typical of racing scenarios.
-    \item \textbf{Yaw Rate}: The yaw rate is centered around 0, with a narrow spread, indicating stable cornering behavior with minimal oversteer or understeer.
+    \item \textbf{Gas}: The charted data indicates the throttle is for the most part driving at maximum capability, as shown in the large number of 1.0 data points, which indicates an aggressive-acceleration driving mode.
+    \item \textbf{Brake}: he distribution of braking force is focused mainly around 0.0, indicating that braking is not used frequently throughout the session.
+    \item \textbf{Speed}:  The speed distribution features a strong peak at 200 km/h, reflecting the dominance of high-speed driving conditions typical of racing settings.
+    \item \textbf{Yaw Rate}: The yaw rate displays central tendency around 0 with low dispersions, indicating uniform cornering dynamics with little oversteer or understeer.
     \item \textbf{G-Forces}: The distributions of \textit{g\_force\_x}, \textit{g\_force\_y}, and \textit{g\_force\_z} are centered around 0, with \textit{g\_force\_y} showing a wider spread, reflecting lateral forces experienced during cornering.
 \end{itemize}
 
-These distributions provide a comprehensive overview of the driving dynamics and vehicle behavior during the session, highlighting the conditions under which the data was collected.
+These distributions provide an exhaustive overview of driving dynamics and vehicle performance throughout the session, with focus placed on the predominant conditions that affected data acquisition.
 
 \begin{figure}[H]
     \centering
@@ -1242,18 +1230,17 @@ These distributions provide a comprehensive overview of the driving dynamics and
 \end{figure}
 
 \subsubsection{Correlation Matrix of Key Variables}
-Figure \ref{fig:correlation_matrix} presents the correlation matrix of key physical variables collected during the driving session. The matrix highlights the pairwise relationships between variables, with correlation coefficients ranging from -1 (strong negative correlation) to 1 (strong positive correlation). The color scale visually represents the strength and direction of the correlations, where red indicates positive correlations and blue indicates negative correlations.
+depicts the correlation matrix of the key physical variables measured over the driving session. The pairwise correlations between the variables are explained through correlation coefficients that range from -1, representing strong negative correlation, through 1, corresponding to strong positive correlation. The colour scale shown is an indication of both the direction as well as the extent of the correlation, with red indicating positive correlation, whereas blue indicates negative correlation.
 
 \begin{itemize}
-    \item \textbf{Gas and Brake}: A strong negative correlation (-0.61) is observed, as expected, since throttle and braking are typically mutually exclusive actions.
-    \item \textbf{Gas and G\_Force\_X}: A strong positive correlation (0.75) indicates that higher throttle application is associated with increased longitudinal forces.
-    \item \textbf{Brake and G\_Force\_X}: A strong negative correlation (-0.91) suggests that braking is closely tied to deceleration forces.
-    \item \textbf{Yaw Rate and G\_Force\_Y}: A strong positive correlation (0.92) reflects the relationship between lateral forces and the vehicle's yawing motion during cornering.
-    \item \textbf{Speed and Normalized Car Position}: A weak negative correlation (-0.23) suggests that speed slightly decreases in certain sections of the track.
+    \item \textbf{Gas and Brake}: There is an important negative correlation of -0.61, as would be expected, since the actions of accelerating and decelerating are typically opposite.
+    \item \textbf{Gas and G\_Force\_X}: The strong positive correlation of 0.75 indicates that increased use of throttle is associated with increased longitudinal force.
+    \item \textbf{Brake and G\_Force\_X}: The strong negative correlation of -0.91 is reflective of an important relationship between braking actions and deceleration-related forces.
+    \item \textbf{Yaw Rate and G\_Force\_Y}: The positive coefficient of 0.92 confirms that both lateral force input and yaw motion of the vehicle are positively related when driving in curves.
+    \item \textbf{Speed and Normalized Car Position}:The weak negative correlation of -0.23 shows speed decreases moderately in particular segments of the track
 \end{itemize}
 
-This correlation matrix provides valuable insights into the interdependencies between variables, helping to identify key factors influencing vehicle dynamics and driver behaviour.
-
+The correlation matrix provides critical information regarding the interrelation of variables, enabling identification of major factors that influence driver action and car dynamics.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1.2\textwidth]{img/Figure_2.png}
@@ -1262,12 +1249,12 @@ This correlation matrix provides valuable insights into the interdependencies be
 \end{figure}
 
 \subsubsection{Distribution of Front vs Rear Wheel Slip}
-Figure \ref{fig:front_rear_slip_distribution} illustrates the distribution of wheel slip values for the front and rear wheels during the driving session. The histogram provides a comparative analysis of the slip behavior between the front and rear wheels, with overlaid density curves to highlight the trends.
+The difference in front and rear wheel slip values when in operation is depicted in Figure \ref{fig:front_rear_slip_distribution}. The use of the histogram allows for comparison of front versus rear wheel slip characteristics, with further clarification offered in terms of the used density curves constituting the highlighted trends.
 
 \begin{itemize}
-    \item \textbf{Front Wheel Slip}: The distribution shows a significant concentration of values near 0, indicating that the front wheels generally maintain good traction. This reflects their primary role in steering and stability, with minimal slip under normal conditions.
-    \item \textbf{Rear Wheel Slip}: The rear wheels exhibit a broader distribution compared to the front wheels, with a noticeable peak around 0.25. This is due to the fact that the car is rear-wheel drive, meaning that during acceleration, especially in corners, the rear wheels are more prone to losing grip. This behavior is typical of rear wheel drive vehicles, where power delivery to the rear wheels increases the likelihood of slip.
-    \item \textbf{Comparison and Oversteer}: The higher slip values observed in the rear wheels indicate that the car tends to experience oversteer during cornering. This is a result of the rear wheels losing traction more easily when power is applied, leading to a dynamic where the rear of the car rotates more than the front.
+    \item \textbf{Front Wheel Slip}: The information tells us of a significant clustering of values about 0, which indicates that front wheels generally maintain satisfactory traction. This finding highlights their important role in direction and balance, with little slip in normal conditions.
+    \item \textbf{Rear Wheel Slip}: The slip distribution of the rear wheels is much greater than that of the front wheels, with a sharp peak occurring at 0.25. This can be explained through the car's rear-wheel drive layout; when accelerating, especially when cornering, the rear wheels tend to slip. This is typical for rear-wheel drive vehicles, as power transmitted through the rear wheels intensifies the chances of slip occurring.
+    \item \textbf{Oversteer and Comparative Analysis}: High slip ratios in the rear wheels imply an inclination for oversteer in cornering. This is due to the decrease in traction when the power is being supplied to the rear wheels such that the rear of the car rotates with an increased angle relative to the front.
 \end{itemize}
 \begin{figure}[H]
     \centering
@@ -1277,25 +1264,22 @@ Figure \ref{fig:front_rear_slip_distribution} illustrates the distribution of wh
 \end{figure}
 
 \subsubsection{Front and Rear Wheel Slip by Grip Classification}
-Figures \ref{fig:front_slip_classification} and \ref{fig:rear_slip_classification} present the distribution of front and rear wheel slip values across different grip classifications. These boxplots provide insights into how wheel slip varies under different driving conditions, categorized as \textit{neutral}, \textit{high grip accelerate}, \textit{low grip accelerate}, and \textit{grip loss}.
+Figures \ref{fig:front_slip_classification} and \ref{fig:rear_slip_classification} represent the front and rear wheel slip distribution at different grip categories. The given boxplots provide insight into the variation of wheel slips observed under different driving conditions, which are classified as \textit{neutral}, \textit{high grip accelerate}, \textit{low grip accelerate}, and \textit{grip loss}.
 
 \begin{itemize}
     \item \textbf{Front Wheel Slip (Figure \ref{fig:front_slip_classification})}: 
-    The front wheel slip values are generally lower compared to the rear wheels, reflecting the role of the front wheels in maintaining stability and steering control.\\
-    - In the \textit{neutral} category, the slip values are minimal, indicating stable driving conditions.\\
-    - As the grip classification moves from \textit{high grip accelerate} to \textit{low grip accelerate} and \textit{grip loss}, the front wheel slip increases, showing a loss of traction under more extreme conditions.
+    The front wheels normally present lower values of slip compared to the rear wheels, highlighting the important function of maintaining stability and steering control.\\
+    - In the \textit{neutral} class, the slip values are low, indicating that the driving conditions are stable.\\
+    - The grip level transition, from \textit{high grip accelerate} to \textit{low grip accelerate} and finally to \textit{grip loss}, is associated with an increase in front wheel slip as an indication of decreasing traction under increasingly difficult conditions.
 
     \item \textbf{Rear Wheel Slip (Figure \ref{fig:rear_slip_classification})}: 
-    The rear wheel slip values are significantly higher than the front wheels, particularly in the \textit{low grip accelerate} and \textit{grip loss} categories. This is due to the rear-wheel-drive configuration of the car, where power delivery to the rear wheels increases the likelihood of slip during acceleration.\\
-    - The \textit{grip loss} category shows the highest slip values, indicating a complete loss of traction in the rear wheels, often leading to oversteer.\\
-    - The \textit{neutral} category exhibits the lowest slip values, reflecting stable driving conditions with minimal rear wheel slip.
+    The rear wheel slip values are much higher compared to the front wheels, particularly during conditions of \textit{low grip acceleration} and \textit{grip loss}. This has to do with the rear-wheel-drive design of the vehicle, which makes the likelihood of rear wheel slip during an acceleration event much higher.\\
+    - The category designated as \textit{grip loss} has the largest slip values, which describe a complete loss of traction at the rear wheels, often causing oversteer.\\
+    - The \textit{neutral} category shows the least slipping, which indicates good driving conditions with little rear wheel slipping.
 
     \item \textbf{Comparison}: \\
-    - The rear wheels exhibit a broader range of slip values compared to the front wheels, highlighting the dynamic differences in traction behavior between the two axles.\\
-    - The tendency for higher rear wheel slip under acceleration and cornering conditions is a key characteristic of the vehicle's rear wheel drive dynamics.
+    - The rear wheels have a greater range of values for slipping compared to the front wheels, highlighting the different dynamic conditions of traction between the two axles.\\
 \end{itemize}
-
-These analyses emphasize the importance of understanding wheel slip behavior to evaluate vehicle stability and driver control under various grip conditions.
 
 \begin{figure}[H]
     \centering
@@ -1312,18 +1296,18 @@ These analyses emphasize the importance of understanding wheel slip behavior to 
 \end{figure}
 
 \subsubsection{Distribution of Tire Pressure and Temperature by Axle}
-Figures \ref{fig:tire_pressure_distribution} and \ref{fig:tire_temperature_distribution} illustrate the distribution of tire pressure and temperature for the front and rear tires during the driving session. These histograms provide insights into the differences between the front and rear axles, highlighting the impact of the car's rear wheel drive configuration on these variables.
+Tire pressure and temperature distribution for the front and rear tires during the driving session are shown in figures \ref{fig:tire_pressure_distribution} and \ref{fig:tire_temperature_distribution}. The histograms provide vital information on the differences between the front and rear axles, which highlights the impact of the rear-wheel drive configuration of the car on these values.
 
 \begin{itemize}
     \item \textbf{Tire Pressure (Figure \ref{fig:tire_pressure_distribution})}:\\
-    - The rear tires exhibit higher pressure values compared to the front tires. This is likely due to the car's rear-wheel-drive configuration, where the rear tires bear the brunt of the acceleration forces, especially during cornering.\\
-    - The increased pressure in the rear tires can also be attributed to the dynamic weight transfer to the rear axle during acceleration, which compresses the tires and increases their pressure.\\
-    - The front tires, on the other hand, maintain relatively lower and more consistent pressure values, reflecting their primary role in steering and stability.
+    - The rear tire pressure exceeds the front tire pressure. This is an effect that can be explained by the rear-wheel drive orientation of the vehicle, where the rear wheels bear most of the accelerating load through cornering maneuvers.\\
+    - The rise in rear tire pressure can be attributed to the dynamic transfer of weight towards the rear axle during acceleration, which causes tire compression and hence creates a rise in pressure inside the tires.\\
+    - By contrast, the front wheels tend to be relatively lower and consistent in terms of pressure, relating to primary functions regarding steering and stability.
 
     \item \textbf{Tire Temperature (Figure \ref{fig:tire_temperature_distribution})}:\\
-    - The rear tires also exhibit higher temperatures compared to the front tires. This is directly related to the increased friction and energy dissipation caused by the rear tires' role in delivering power to the road.\\
-    - During cornering, the rear tires experience additional stress due to acceleration, which generates more heat. This is particularly evident in the car's tendency to oversteer, where the rear tires lose grip and slide, further increasing their temperature.\\
-    - The relationship between tire pressure and temperature is evident, as higher temperatures in the rear tires lead to increased pressure due to the expansion of air inside the tires.
+    - Temperatures in the rear tyres are higher compared to the front tyres. This is basically related to the higher friction and energy dissipation that take place during the operation of the rear tyres since these tyres transmit the power to the ground.\\
+    - During a turn, the rear wheels are subjected to increased stress through acceleration, which causes an increase in temperature. This is particularly intense in the case of oversteer, where the rear wheels disengage from traction and skid, worsening their thermal state.\\
+    - The relationship between tire pressure and temperature is evident since higher temperatures in the rear tires lead to rising pressure as the air held within the tires at these warmer temperatures expands.
 \end{itemize}
 \begin{figure}[H]
     \centering
@@ -1339,37 +1323,234 @@ Figures \ref{fig:tire_pressure_distribution} and \ref{fig:tire_temperature_distr
     \label{fig:tire_temperature_distribution}
 \end{figure}
 
+\subsubsection{Speed along the Track vs Grip Classification}
+The interaction between grip classification labels and their corresponding locations around the track is shown in figure \ref{fig:speed_grip_classification}. The graph offers insight into variations in trackside speed, along with the detection of different grip conditions that arise during the course of the driving session.
 
+\begin{itemize}
+    \item \textbf{Grip Behavior in Corners}: \\
+    - The figure illustrates how as the vehicle slows down, and especially in the case of turns, the categorization is changed from \textit{neutral} to \textit{low grip accelerate}. This indicates the driver is trying to accelerate as the vehicle is faced with reduced traction.\\
+    - Under other conditions, when the driver applies too much force on cornering, terminology is changed to \textit{grip loss} to highlight conditions where the car completely loses traction.
 
+    \item \textbf{Loss of Control}: \\
+    - The chart also shows an array of data points that are significantly below the previous velocity limits. These data points are associated with moments where the driver lost control, which led to an appreciable loss of speed. These events are commonly related to dynamics like oversteer or understeer, where the vehicle is unstable and the driver cannot regain control.
 
+    \item \textbf{General Observations}: \\
+    -  The major part of the track is labeled as \textit{neutral}, referring to stable driving conditions with low slip levels.\\
+    - The transitions from \textit{low grip acceleration} to \textit{grip loss} mainly take place in specific areas of the track, mostly at corners, where the dynamics of the vehicle are subjected to the severest test.
+\end{itemize}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/Figure_10.png}
+    \caption{Speed along the track vs grip classification.}
+    \label{fig:speed_grip_classification}
+\end{figure}
 
+\subsubsection{Lateral G-Force along the Track by Grip Classification}
+Figure \ref{fig:lateral_gforce_grip_classification} shows the lateral G-force as a function of track position, with regions labeled as per different grip categories. The graphical presentation further improves the perception of the vehicle's dynamics in cornering and highlights the transitions between different grip states.
 
+\begin{itemize}
+    \item \textbf{Lateral G-Force in Corners}:\\
+    - The data reflected in the graph shows an appreciable rise in lateral G-force when cornering, as would be anticipated from the centripetal forces acting on the car.\\
+    - During these phases, the categorization shifts to \textit{neutral}, \textit{high grip accelerate}, and \textit{low grip accelerate}, indicating the car's attempts to maintain traction during turns.\\\\
 
+    \item \textbf{Grip Loss Events}:\\
+    - The \textit{grip loss} is divided into regions showing the highest maximum lateral G-force values, which equates to where the vehicle loses traction when the lateral forces exceed the tire grip limits.\\
+    - These incidents are mostly limited to specific areas of the circuit, usually at sharp turns, where the driver is pushing the car to its highest potential.\\
+\end{itemize}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{img/Figure_11.png}
+    \caption{Lateral G-force along the track by grip classification.}
+    \label{fig:lateral_gforce_grip_classification}
+\end{figure}
 
+\subsubsection{Mean Wheel Slip along the Track by Grip Classification}
+Figure \ref{fig:mean_wheel_slip_grip_classification} shows the mean wheel slip with respect to the position on the track, as classified using grip-level labels. The figure provides an overall view of the differences in wheel slip along the track and highlights the transitions between different grip levels.
 
+\begin{itemize}
+    \item \textbf{Wheel Slip in Corners}:\\
+    - The figure shows an increase in wheel slip on cornering as indicated by the transitions into \textit{low grip accelerate} and \textit{grip loss}.\\
+    - Under such conditions, the driver makes an effort to drive at high velocities when taking curves, leading to higher values of slip. If the slip exceeds the critical level, the situation leads to \textit{grip loss}, which is the complete loss of traction.
 
+    \item \textbf{Grip Loss Events}:\\
+    - The classification of \textit{grip loss} is reported in regions with the highest values of wheel slip, typically occurring during sharp turns or under conditions of major acceleration.\\
+    - They are limited to specific areas of the circuit, where the vehicle dynamics are highly stressed and the driver faces the challenge of maintaining control.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/Figure_12.png}
+    \caption{Mean wheel slip along the track by grip classification.}
+    \label{fig:mean_wheel_slip_grip_classification}
+\end{figure}
 
+\subsubsection{Mean Wheel Slip Over Time}
+Figure \ref{fig:mean_wheel_slip} shows the mean wheel slip during the given period, obtained from the rolling average of 500 data values. This result is particularly notable as it highlights the impact of tire degradation on the operating efficacy of the vehicle, even during simulation periods as short as 10 minutes.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\begin{itemize}
+    \item \textbf{Tire Wear and Slip Reduction}:\\
+    - The data shows an evident trend of decreasing mean wheel slip as the simulation progresses. This finding can imply that, during the short period of the session, tire wear plays an important role in improving traction and lessening slip.
+    \item \textbf{Rolling Average for Smoother Analysis}:\\
+    - Using the running average of 500 records smooths out short-term ups and downs and thereby represents the overall trend of wheel slip for the period.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/slip_medio.png}
+    \caption{Mean wheel slip over time (rolling average of 500 records).}
+    \label{fig:mean_wheel_slip}
+\end{figure}
 
 
 \subsection{Aggregated Analysis}
+In this section, analysis of the complete data of all drivers is made focusing on the driver name and temperature based classification. The principal characteristics are also examined in order to pick up observable trends and patterns. A small adjustment was made in regard to the slip values. With the fact that the tracks have surfaces including grass, gravel, and miscellaneous types that may jeopardize data accuracy in view, the slip upper limit was restricted to 1 to provide stronger reported results.
+For cleaner and more interpretable graphs, only 5 drivers were selected for the analysis instead of the 10 drivers originally used to acquire the dataset.
+
+\subsubsection{Average Slip by Track and Temperature}
+The average slip values as grouped by the circuit and the temperature are presented in Figure \ref{fig:average_slip_track_temp}. These values highlight the differences in slip within different circuits (Abu Dhabi, Imola, and Mugello) and between different temperatures (0°C, 18°C, and 36°C).
+
+\begin{itemize}
+    \item \textbf{Temperature Impact}: 
+    The data in the graph reveals that the average slip has a tendency to reduce at higher temperatures, that is, 18°C and 36°C, as opposed to 0°C. This implies that tire performance is improved with better traction as the temperatures increase.
+    \item \textbf{Track Differences}: 
+    Across different racetracks, there is a level of uniformity in the mean slip values with small variations depending on temperature. This stability highlights the ability of the Pirelli soft tires to adapt to different racetrack conditions.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/3.png}
+    \caption{Average slip by track and temperature.}
+    \label{fig:average_slip_track_temp}
+\end{figure}
+
+\subsubsection{Average Slip by Temperature (All Circuits and Drivers)}
+Figure \ref{fig:average_slip_temp}  shows the average slip values calculated for different circuits and drivers, split by temperature.
+
+\begin{itemize}
+    \item \textbf{Optimal Temperature for Grip}: 
+    The data in the graph clearly reflects that maximum grip occurs when temperatures are 18°C and 36°C, which also represents the preferred use temperatures for Pirelli soft tires. These temperatures result in improved traction for the tires, which leads to a decrease in the average slip values.
+    \item \textbf{Performance at 0°C}: 
+    At 0°C temperatures, the average slip slightly increases, indicating reduced traction due to cold climatic conditions that affect the tire's ability to maintain optimum performance.
+\end{itemize}
+The perfect temperature for attaining the best possible circuit performance using Pirelli soft tires is about 26°C because the tire reaches its maximum grip in this range of temperatures.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/1.png}
+    \caption{Average slip by temperature (aggregated across all circuits and drivers).}
+    \label{fig:average_slip_temp}
+\end{figure}
+
+
+\subsubsection{Distribution of Labels by Temperature}
+The distribution of grip classification labels (\textit{result}) to different temperatures (0°C, 18°C, and 36°C) is depicted in Figure \ref{fig:label_distribution_temperature}. These temperatures represent different driving conditions that include \textit{neutral}, \textit{high grip accelerate}, \textit{low grip accelerate}: \\\\\\
+
+\begin{itemize}
+    \item \textbf{Neutral Condition Dominance}:\\
+    - The descriptor \textit{neutral} reflects the most common classification within a range of temperatures in that the majority of driving times occur under stable grip conditions.\\
+    - The distribution of the \textit{neutral} label shows consistency at temperatures 0°C, 18°C, and 36°C, with minimal variation compared to changes in temperature.
+
+    \item \textbf{High Grip Accelerate and Low Grip Accelerate}:\\
+    - The \textit{high grip accelerate} classification is the second most common category, showing a similar distribution at different temperatures.\\
+    - The term \textit{low grip accelerate} isn't very frequent; nonetheless, it describes a slight decrease in frequency as the temperatures increase, which means enhanced grip performance when the threshold temperatures are high.
+
+    \item \textbf{Grip Loss Events}:\\
+    - The term \textit{grip loss} occurs least frequently, indicating that the process of traction loss occurs very rarely.\\
+    - The frequency of \textit{grip loss} is slightly lower in temperatures of 18°C and 36°C when compared to 0°C, hence supporting the hypothesis that elevated temperatures improve the performance of the tire and reduce the likelihood of grip loss.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{img/2.png}
+    \caption{Distribution of grip classification labels by temperature.}
+    \label{fig:label_distribution_temperature}
+\end{figure}
+
+\subsubsection{Distribution of Speed by Track and Driver}
+Figure \ref{fig:speed_distribution_driver} outlines the differences in speed along the separate tracks (Abu Dhabi, Imola, and Mugello) for each driver. The boxplots provide important insights about the driving ability and consistency of each driver on the different tracks.
+
+\begin{itemize}
+    \item \textbf{Driver Performance}:\\
+    - The graph shows differences in the speeds of individual drivers since some drivers tend to drive at higher speeds in all tracks.\\
+    - Both \textit{mattiaR} and \textit{mattiaC} have high median velocities, indicating their skill in driving the car close to its maximum speed.
+
+    \item \textbf{Track Influence}:\\
+    - The track layout also affects the range of speeds. For example, Mugello has a larger range of speeds due to its complex sectors and longer high-speed straights.\\
+    - Imola and Abu Dhabi's circuits also have a more even speed distribution, typical of their well-planned designs.\\
+
+\end{itemize}
+The results reported here along with the evidence in Table \ref{tab:driver_experience} demonstrate that higher skill drivers are able to achieve higher speeds without losing control, particularly in challenging portions of the track.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/9.png}
+    \caption{Distribution of speed by track and driver.}
+    \label{fig:speed_distribution_driver}
+\end{figure}
+
+\subsubsection{Distribution of Average Slip by Temperature and Driver}
+The Figure \ref{fig:slip_distribution_driver} depicts the average slip values for different temperature settings for each driver. The boxplots highlight the relationship between the driving skill and the management of slip for different conditions.
+
+\begin{itemize}
+    \item \textbf{Slip as an Indicator of Driver Skill}:\\
+    - Higher slip values, as recorded by \textit{mattiaR}, show a more aggressive dynamic driving style, leading to reduced stability, but he brought the car to Its limit.
+    \item \textbf{Temperature Influence}:\\
+    - At 0°C, the slip values are generally higher, indicating reduced grip due to colder tire conditions.
+
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/7.png}
+    \caption{Distribution of average slip by temperature and driver.}
+    \label{fig:slip_distribution_driver}
+\end{figure}
+
+\subsubsection{Trend of Global Average Slip Over Time}
+Fig. \ref{fig:global_average_slip} depicts the temporal evolution of the global average slip for all drivers, tracks, and conditions as estimated using a moving average approach that involves a series of a total of 500 measurements. This plot highlights the learning curve for the slip that occurs in the driving sequences.
+
+\begin{itemize}
+    \item \textbf{Increase in Average Slip Over Time}:\\
+    - The graph shows an increasing trend in the average slip as the time increases. This trend occurs due to tire wear and tear that reduces the traction of tires and causes higher readings in the slip measurements.\\
+    -  The red line represents the overall rising trend through which the collective effect of tire wear and tear becomes visible.
+
+    \item \textbf{Short-Term Variations}: Although the overall trend shows an upward direction, some fluctuations in the slip values can be observed at shorter time scales. These could be due to specific driving maneuvers and changes in tire temperatures during the session.
+
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{img/10.png}
+    \caption{Trend of global average slip over time with moving average (500 records).}
+    \label{fig:global_average_slip}
+\end{figure}
+
+\subsection{Other Analysis}
+Finally, after collecting the dataset from the 10 participants, one participant volunteered for a longer driving session. To improve the accuracy of the models, a larger dataset was collected for each of the 3 circuits, with approximately one hour of driving data recorded without any tire changes. This approach aimed to train the models on a longer time period, capturing the effects of extended driving sessions.\\
+During the course of the session, the operator noticed a decline in traction as the session progressed. To demonstrate the underlying physical concepts and provide empirical evidence, we show graphical models of grip through the various circuits.\\
+The information plotted in the graphs \ref{fig:abu_1}, \ref{fig:imola_1} and \ref{fig:mugello_1} shows a steady rise in the slip with time. However, there are periodical decreases in the slip values. These decreases can be attributed to changes in the driving style of the driver during the session.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{img/grafico1Oraabu.png}
+\caption{Graph of the slip over 1 hour of driving on the Abu Dhabi circuit.}
+\label{fig:abu_1}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{img/imola_1_ora.png}
+\caption{Graph of the slip over 1 hour of driving on the Imola circuit.}
+\label{fig:imola_1}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{img/mugello_1_ora.png}
+\caption{Graph of the slip over 1 hour of driving on the Mugello circuit.}
+\label{fig:mugello_1}
+\end{figure}
+
+\newpage
 
 \section{Grip Prediction with Machine Learning}
 Dire che dal dataset sono stati tolti i dati dello slip delle ruote, e l'etichetta che va predetta.
@@ -1384,22 +1565,167 @@ Dire che dal dataset sono stati tolti i dati dello slip delle ruote, e l'etichet
 
 \subsection{Tabular Resnet 1D}
 
+
+
+
+
+
+
+\newpage
+
 \section{User Interface}
+The user interface is designed to provide clear and immediate visual support while driving, showing in real time the behavior of the tires and the type of grip detected by the predictive model. The goal is to make grip dynamics understandable even to non-expert users by intuitively highlighting which wheels are losing grip and what overall behavior the car has at that moment.
 
 \subsection{Requirements}
 
 \subsubsection{Functional requirements}
+The functional requirements of the interface are:
+\begin{itemize}
+    \item Schematic visualization of the car as seen from above with the four wheels represented graphically.
+
+    \item  Each wheel must:\\
+    - Show the slip (slip) value in real time.\\
+    - Change color according to the slip value, according to a color scale.\\
+    - Show the overall behavior of the vehicle by the label predicted by the model (e.g., grip loss, neutral, high grip accelerate, low grip accelerate).\\
+    - Allow changing the predictive model to be used (selecting it from those described in the previous chapters).\\
+    - Real-time synchronization with data provided by the simulator (Assetto Corsa).
+\end{itemize}
 
 \subsubsection{Non-functional requirements}
+The nonfunctional requirements of the interface are:
+
+\begin{itemize}
+    \item \textbf{Responsiveness:} the interface must update frequently enough to make the evolution of the slip and predicted labels smooth and understandable (at least 10 FPS).
+    \item \textbf{Usability:} the interface must be simple, intuitive, and accessible even to users who are not technical experts.
+    \item \textbf{Compatibility:} it must be compatible with the main operating systems (Windows, Linux) and easily integrated with the data stream coming from Assetto Corsa.
+    \item \textbf{Extendability:} the interface must be modularly designed to allow future addition of new features, such as multiple session analysis or model comparison.
+    \item \textbf{Performance:} the interface must not introduce significant delays in data flow or in rendering the driving experience.
+\end{itemize}
 
 \subsection{Design}
+The design phase of the user interface was guided by two main objectives: first, the clarity and intuitiveness of the real time visualization of wheel behavior, and second, the ability to return concise but meaningful information to the user regarding the overall state of the vehicle while driving.\\
+The interface design was conceived to adapt to a dynamic context such as a real-time driving simulation, where the user (driver or developer) cannot devote prolonged attention to data analysis but needs instantaneous, intuitive, visually coded information.\\
+
+The interface is divided into two main areas:
+\begin{itemize}
+    \item \textbf{Wheel View:} stylized representation of the car as seen from above with four wheels. Each wheel shows a numeric slip indicator and changes color according to its value. This section provides an immediate readout of tire condition and any localized slip.
+    \item \textbf{Overall status indicator:} a section dedicated to displaying the label predicted by the currently active AI model. The label is shown both textually and with an associated color and possibly an icon. The goal is to provide the driver or user with a summary of the vehicle's overall grip.
+\end{itemize}
+
+Graphic choices were geared toward maximizing contrast and readability, using a color palette suitable for low visual concentration situations.
 
 \subsubsection{Personas and scenarios}
+To properly define the needs of the interface users, three representative profiles (personas) were created, each with different needs and skill levels. A typical usage scenario was defined for each person.
+\begin{itemize}
+    \item \textbf{Person 1:} \\
+    - Name: Luke\\
+    - Role: Advanced Sim Racer\\
+    - Age: 24 years old\\
+    - Profession: Mechanical engineering student\\
+    - Experience: High, has been using Assetto Corsa for years\\
+    - Goal: Improve cornering performance by optimizing grip management\\
+    - Scenario: Luca uses the interface during free practice on a technical circuit to analyze the moments when the front tires start to slip. Using the slip visualization and the label predicted by the model, he can tell if he can still accelerate or if he has reached the limit.
+    \item \textbf{Person 2:}\\
+    - Name: Julia\\ 
+    - Role: Junior AI engineer in motorsport\\
+    - Age: 27 years old\\
+    - Profession: Data scientist in a startup\\
+    - Experience: Medium in racing, high in machine learning\\
+    - Goal: Validate model predictions in realistic context\\
+    - Scenario: Julia uses the interface to observe the behavior of the classifier in real time, comparing the model output with real slip values to evaluate the accuracy of the network. She needs a clear interface for A/B testing between different models.
+    \item \textbf{Person 3:}\\
+    - Name: Matthew\\ 
+    - Role: Technical viewer at an event\\
+    - Age: 35 years old\\
+    - Profession: Motorsports enthusiast, but not technical expert\\
+    - Experience: Low\\
+    - Goal: To better understand what happens during the race\\
+    - Scenario: Matthew attends an event where the on-screen interface is shown. He immediately understands which wheels are losing grip because of the color, and he grasps the importance of the car's behavior because of the visual label. The interface helps him interpret driving even without knowing the raw data.
+\end{itemize}
+
+\subsubsection{Focus Group}
+To validate the design choices and gather qualitative feedback, a focus group was organized with 6 participants, divided equally between experienced users (sim racers, engineering students) and non-technical users (motor enthusiasts and outside observers). The meeting was structured in three phases:
+
+\begin{itemize}
+    \item \textbf{Display:} a prototype of the interface (mockup or static simulation) was shown with a short video showing the evolution of the slip during a lap on a track.
+    \item \textbf{Interaction:} users tried to interact with the interface, simulating a real time test (using pre-recorded data).
+    \item \textbf{Discussion:} an open, question-driven feedback gathering session was conducted.
+\end{itemize}
+Main observations gathered:
+\begin{itemize}
+    \item Technical users appreciated the ability to see the precise numerical value of the slip, and also asked about the ability to customize color thresholds.
+    \item Non-technical users found the color code and overall label very useful, but suggested adding icons or symbols to make it easier to understand at a glance.
+    \item Some participants suggested substitute with a brief explanatory text each label (e.g., “you can speed up again,” “you are on the limit,” “you have lost grip”).
+\end{itemize}
+
+The interface concept was found to be positive and useful by all participants. The proposals that emerged will be taken into consideration in subsequent iterations, particularly to improve the visual accessibility and readability of information by users with different levels of experience.
 
 \subsubsection{Interface design}
+With regard to user interface design, it focused on a number of fundamental principles geared toward usability and adaptability to ensure a smooth and effective user experience, even in a dynamic context such as driving simulation.\\
+
+The main aspects considered are:
+\begin{itemize}
+    \item \textbf{Accessibility by design:} the interface was designed with accessibility principles in mind from the initial stages. A high color contrast was chosen to ensure readability even in low light conditions or for users with visual impairments (such as color blindness). All visual elements were designed to be perceivable without ambiguity, and text labels accompany colors to avoid interpretative ambiguities.
+    \item \textbf{Responsive layout:} the interface layout automatically adapts to the size and resolution of the device in use, whether it is a desktop monitor, a tablet, or a second dedicated screen in the simulator location. Elements are rearranged to optimize readability and interaction in any context, without loss of information.
+\end{itemize}
+
+In line with user-centered design best practices, the interface design phase was accompanied by the creation of static mockup, which were useful for validating the positioning of elements, color choices, and information flow.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{img/mockup.png}
+\caption{Graphical mockup of the application interfaces.}
+\label{fig:mockup}
+\end{figure}
+
+
+The mockup above \ref{fig:mockup} shows the basic structure of the interface: in the center, there is an image that represents the silhouette of the car with the four wheels, each colored according to the real time slip value and accompanied by a numerical value. At the bottom is the global state label predicted by the AI model, and at the top, a Combo Box to select the Machine learning model.
 
 \subsection{User Interaction}
-Parlare di un interazione non solo visiva ma anche al volante ad esempio, o con l'utilizzo di suoni. Possibile implementazione con suoni.
+Interaction with the interface is not limited to the visual aspect, but is designed to provide a multimodal experience, also taking advantage of sound and potentially haptic signals to provide real-time feedback to the user while driving.
+
+\begin{itemize}
+    \item \textbf{Visual Interaction:} the user can easily monitor wheel status through intuitive color coding and numerical values updated in real time. The overall label provides a clear summary of the vehicle's status, proving especially useful at critical times, such as during cornering or challenging driving situations.
+    \item \textbf{Sound Interaction:} an audible notification system has been designed to provide immediate feedback to the driver:
+    \begin{itemize}
+        \item A simple sound signal \cite{bip_sound} to indicate a high grip state.
+        \item A higher-pitched signal \cite{bip_sound_machine} to warn that you are at the limit of the model's intended grip.
+        \item An error sound signal \cite{beep_warning} to notify you of loss of grip during the course.
+    \end{itemize}
+\end{itemize}
+
+\section{Technology}
+The application was developed using the Python programming language and the PyQt5 library, one of the most powerful libraries for creating cross-platform graphical user interfaces. PyQt5 offers a wide range of tools for designing modern, interactive GUIs, allowing the integration of advanced features such as event handling, graphical rendering, and multimedia support.
+
+\subsection{Application Technology Structure}
+The application consists of several main components:
+\begin{itemize}
+    \item \textbf{WheelVisualizer:} a custom widget that uses the \texttt{QPainter} module to draw a graphical representation of the vehicle wheels. Each wheel is dynamically colored according to the slip value, which is calculated and updated in real time.
+    \item \textbf{MainWindow:} the main window of the application, which includes:
+    \begin{itemize}
+        \item A model selector (\texttt{QComboBox}) for choosing between different prediction algorithms.
+        \item A status label (\texttt{QLabel}) showing summary information about the vehicle status.
+        \item A sound notification system (\texttt{QSoundEffect}) to provide immediate feedback to the driver based on the predicted state.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Technologies Used}
+\begin{itemize}
+    \item \textbf{PyQt5:} used for creating the graphical user interface, including custom widgets, event management, and graphical rendering.
+    \item \textbf{QPainter:} employed for wheel and vehicle body design, with a responsive design that adapts to the window size.
+    \item \textbf{QSoundEffect:} used to implement a sound notification system that alerts the user in real time.
+    \item \textbf{QTimer:} used to periodically update wheel slip and vehicle status data.
+\end{itemize}
+
+\newpage
+\section{Final Result}
+The end result is an intuitive and functional Graphical User Interface designed to monitor in real time and provide immediate feedback to the driver. The interface is shown in the figure \ref{fig:GUI}.
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{img/gui.PNG}
+\caption{The application interface.}
+\label{fig:GUI}
+\end{figure}
 
 \chapter{Future developments}
 Parlare del fatto di poter usare tipologie di mescola differente per le ruote.
