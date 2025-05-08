@@ -6,7 +6,6 @@ import seaborn as sns
 import numpy as np
 
 def parse_filename(filename):
-    # Exemple: vehicle_telemetry_mattia_abu_0G_S.csv
     base = os.path.basename(filename)
     parts = base.replace('.csv', '').split('_')
     driver = parts[2]

@@ -1,5 +1,6 @@
 import pandas as pd
-import numpy as np
+import os
+import glob
 
 def convert_to_milliseconds(time_str: str) -> int:
     parts = time_str.split(":")
@@ -32,4 +33,25 @@ def fix_dataset(df: pd.DataFrame) -> pd.DataFrame:
     df.drop(columns=cols_to_drop, inplace=True)
 
     return df
+
+def parse_filename(filename):
+    base = os.path.basename(filename)
+    parts = base.replace('.csv', '').split('_')
+    driver = parts[2]
+    track = parts[3]
+    temp = parts[4]
+    return driver, track, temp
+
+def load_telemetry_data(folder_pattern="*.csv"):
+    all_files = glob.glob(folder_pattern)
+    rows = []
+
+    for f in all_files:
+        driver, track, temp = parse_filename(f)
+        df = pd.read_csv(f)
+        df['driver'] = driver
+        df['track'] = track
+        df['temp'] = temp
+        rows.append(df)
+    return pd.concat(rows, ignore_index=True) if rows else pd.DataFrame()
 
