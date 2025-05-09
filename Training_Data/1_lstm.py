@@ -10,6 +10,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.utils.class_weight import compute_class_weight
 import seaborn as sns
 import matplotlib.pyplot as plt
+import joblib
 
 # === Configurazione iniziale ===
 split_by_circuit = True
@@ -26,6 +27,9 @@ df = fix_dataset(df)
 result_encoder = LabelEncoder()
 df["result"] = result_encoder.fit_transform(df["result"])
 result_classes = result_encoder.classes_
+print("Mappatura delle classi:")
+for i, class_name in enumerate(result_classes):
+    print(f"{i}: {class_name}")
 
 # Encoding altre colonne categoriali
 df["track"] = LabelEncoder().fit_transform(df["track"])
@@ -36,6 +40,8 @@ df["temp"] = LabelEncoder().fit_transform(df["temp"])
 feature_cols = [col for col in df.columns if col not in ["track", "driver", "temp", "result"]]
 scaler = StandardScaler()
 df[feature_cols] = scaler.fit_transform(df[feature_cols])
+joblib.dump(scaler, "./models/1_lstm_scaler.pkl")
+
 
 # Aggiunta colonna time_idx per ogni sessione
 df["time_idx"] = df.groupby(["track", "driver", "temp"]).cumcount()
@@ -81,8 +87,8 @@ else:
 
 # === Calcolo class weights ===
 y_train_labels = np.argmax(y_train, axis=1)
-class_weights = compute_class_weight(class_weight="balanced", classes=np.unique(y_train_labels), y=y_train_labels)
-class_weights_dict = dict(enumerate(class_weights))
+# class_weights = compute_class_weight(class_weight="balanced", classes=np.unique(y_train_labels), y=y_train_labels)
+# class_weights_dict = dict(enumerate(class_weights))
 # class_weights_dict[0] *= 3
 
 custom_early_stopping = CustomEarlyStopping(validation_data=(X_val, y_val), patience=7)
@@ -111,11 +117,11 @@ history = model.fit(
     epochs=50,
     batch_size=64,
     callbacks=[custom_early_stopping],
-    class_weight=class_weights_dict,
+    # class_weight=class_weights_dict,
     verbose=1
 )
 
-model.save("./models/lstm_model.h5")
+model.save("./models/1_lstm_model.keras")
 
 # === Valutazione finale ===
 test_loss, test_acc = model.evaluate(X_test, y_test)

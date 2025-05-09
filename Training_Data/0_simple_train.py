@@ -11,6 +11,7 @@ from custom_early_stop import CustomEarlyStopping
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+import joblib
 
 split_by_circuit = True
 
@@ -36,6 +37,7 @@ feature_cols = [col for col in X_full.columns if col not in ["track", "driver", 
 
 scaler = StandardScaler()
 X_scaled_full = scaler.fit_transform(X_full[feature_cols])
+joblib.dump(scaler, "./models/0_simple_scaler.pkl")
 
 X_full_scaled_df = pd.DataFrame(X_scaled_full, columns=feature_cols, index=df.index)
 
@@ -107,7 +109,7 @@ history = model.fit(
     verbose=1
 )
 
-model.save("./models/simple_cnn_model.h5")
+model.save("./models/0_simple_cnn_model.keras")
 
 test_loss, test_acc = model.evaluate(X_test, y_test)
 print(f"Overall Test accuracy: {test_acc:.2f}")
